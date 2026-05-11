@@ -155,9 +155,14 @@ function saveMatch(){
     location.reload();
 }
 
-function total(m, side){
-    return m.ends.reduce((s,e)=>s+e[side],0);
+
+function total(match, side) {
+    return match.ends.reduce((sum, end) => {
+        const value = side === "a" ? end.a : end.b;
+        return sum + Number(value || 0);
+    }, 0);
 }
+
 
 function render(){
     history.innerHTML="";

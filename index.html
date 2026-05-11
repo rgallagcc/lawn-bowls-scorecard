@@ -38,6 +38,11 @@ th, td {
 }
 th { background: #e0e0e0; }
 .small { width: 70px; }
+.notice {
+    text-align: center;
+    font-style: italic;
+    color: #555;
+}
 </style>
 </head>
 
@@ -75,7 +80,7 @@ th { background: #e0e0e0; }
 
 <button onclick="addEnd()">Add End</button>
 
-<label>Notes
+<label>Match Notes
 <textarea id="notes" rows="3"></textarea>
 </label>
 
@@ -134,21 +139,19 @@ th { background: #e0e0e0; }
 /* ================= DATA ================= */
 let matches = JSON.parse(localStorage.getItem("matches")) || [];
 
-/* ================= ENDS ================= */
+/* ================= END MANAGEMENT ================= */
 function addEnd(a = 0, b = 0) {
     const tbody = endsTable.tBodies[0];
     const row = document.createElement("tr");
-
     row.innerHTML = `
         <td>${tbody.rows.length + 1}</td>
         <td><input class="small" type="number" value="${a}"></td>
         <td><input class="small" type="number" value="${b}"></td>
     `;
-
     tbody.appendChild(row);
 }
 
-/* ================= TOTALS (FIXED) ================= */
+/* ================= TOTAL CALCULATION (SAFE) ================= */
 function total(match, side) {
     return match.ends.reduce((sum, end) => {
         const value = side === "a" ? end.a : end.b;
@@ -158,7 +161,6 @@ function total(match, side) {
 
 /* ================= SAVE MATCH ================= */
 function saveMatch() {
-
     if (!date.value || !teamA.value || !teamB.value) {
         alert("Please enter a date and both team names.");
         return;
@@ -176,19 +178,11 @@ function saveMatch() {
         date: date.value,
         teamA: {
             name: teamA.value,
-            players: {
-                lead: aLead.value,
-                second: aSecond.value,
-                skip: aSkip.value
-            }
+            players: { lead: aLead.value, second: aSecond.value, skip: aSkip.value }
         },
         teamB: {
             name: teamB.value,
-            players: {
-                lead: bLead.value,
-                second: bSecond.value,
-                skip: bSkip.value
-            }
+            players: { lead: bLead.value, second: bSecond.value, skip: bSkip.value }
         },
         ends,
         notes: notes.value
@@ -202,9 +196,10 @@ function saveMatch() {
     render();
 }
 
-/* ================= RENDER ================= */
+/* ================= RENDER HISTORY ================= */
 function render() {
     history.innerHTML = "";
+    let rowsRendered = 0;
 
     let wins = 0, losses = 0, draws = 0;
     const teamFilter = filterTeam.value.toLowerCase();
@@ -238,7 +233,18 @@ function render() {
             <td>${winner}</td>
             <td><button onclick="loadMatch(${m.id})">✏</button></td>
         </tr>`;
+        rowsRendered++;
     });
+
+    if (rowsRendered === 0) {
+        history.innerHTML = `
+            <tr>
+                <td colspan="7" class="notice">
+                    No matches match the current filters.
+                </td>
+            </tr>
+        `;
+    }
 
     stats.innerHTML = `
         <b>Results</b><br>
@@ -258,7 +264,6 @@ function loadMatch(id) {
     aLead.value = m.teamA.players.lead;
     aSecond.value = m.teamA.players.second;
     aSkip.value = m.teamA.players.skip;
-
     bLead.value = m.teamB.players.lead;
     bSecond.value = m.teamB.players.second;
     bSkip.value = m.teamB.players.skip;
@@ -269,13 +274,17 @@ function loadMatch(id) {
     m.ends.forEach(e => addEnd(e.a, e.b));
 }
 
-/* ================= CLEAR FORM ================= */
+/* ================= CLEAR FORM + FILTERS ================= */
 function clearForm() {
     editingId.value = "";
     endsTable.tBodies[0].innerHTML = "";
     document.querySelectorAll("input, textarea").forEach(e => {
         if (e.type !== "date") e.value = "";
     });
+
+    filterTeam.value = "";
+    fromDate.value = "";
+    toDate.value = "";
 }
 
 /* ================= IMPORT / EXPORT ================= */
@@ -317,7 +326,6 @@ function download(data, name, type) {
     a.click();
 }
 
-/* ================= INIT ================= */
 render();
 </script>
 

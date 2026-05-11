@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lawn Bowls – Scorecard</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+
+        h1, h2 {
+            margin-bottom: 5px;
+        }
+
+        .card {
+            background: #ffffff;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        input {
+            padding: 5px;
+            width: 200px;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 6px;
+            text-align: center;
+        }
+
+        th {
+            background: #e0e0e0;
+        }
+
+        .small-btn {
+            padding: 4px 8px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>🏏 Lawn Bowls Score Card</h1>
+
+<div class="card">
+    <h2>Add New Match</h2>
+
+    <label>
+        Match Date
+        <input type="date" id="matchDate">
+    </label>
+
+    <label>
+        Team A Name
+        <input type="text" id="teamA">
+    </label>
+
+    <label>
+        Team B Name
+        <input type="text" id="teamB">
+    </label>
+
+    <label>
+        Team A Score
+        <input type="number" id="scoreA" value="0">
+    </label>
+
+    <label>
+        Team B Score
+        <input type="number" id="scoreB" value="0">
+    </label>
+
+    <button onclick="addMatch()">Add Match</button>
+</div>
+
+<div class="card">
+    <h2>Match History</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Team A</th>
+                <th>Score</th>
+                <th>Team B</th>
+                <th>Score</th>
+                <th>Winner</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="matchesTable"></tbody>
+    </table>
+</div>
+
+<div class="card">
+    <h2>Export Data</h2>
+
+    <button onclick="exportJSON()">Export as JSON</button>
+    <button onclick="exportCSV()">Export as CSV</button>
+    <button onclick="clearAll()">Clear All Matches</button>
+</div>
+
+<script>
+    let matches = JSON.parse(localStorage.getItem("matches")) || [];
+
+    function addMatch() {
+        const date = matchDate.value;
+        const teamAName = teamA.value;
+        const teamBName = teamB.value;
+        const aScore = parseInt(scoreA.value);
+        const bScore = parseInt(scoreB.value);
+
+        if (!date || !teamAName || !teamBName) {
+            alert("Please complete all fields.");
+            return;
+        }
+
+        const match = {
+            id: Date.now(),
+            date,
+            teamA: teamAName,
+            teamB: teamBName,
+            scoreA: aScore,
+            scoreB: bScore
+        };
+
+        matches.push(match);
+        saveAndRender();
+    }
+
+    function deleteMatch(id) {
+        matches = matches.filter(m => m.id !== id);
+        saveAndRender();
+    }
+
+    function saveAndRender() {
+        localStorage.setItem("matches", JSON.stringify(matches));
+        renderTable();
+    }
+
+    function renderTable() {
+        matchesTable.innerHTML = "";
+
+        matches.forEach(m => {
+            const winner =
+                m.scoreA > m.scoreB ? m.teamA :
+                m.scoreB > m.scoreA ? m.teamB :
+                "Draw";
+
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td>${m.date}</td>
+                <td>${m.teamA}</td>
+                <td>${m.scoreA}</td>
+                <td>${m.teamB}</td>
+                <td>${m.scoreB}</td>
+                <td>${winner}</td>
+                <td>
+                    <button class="small-btn" onclick="deleteMatch(${m.id})">
+                        ❌
+                    </button>
+                </td>
+            `;
+
+            matchesTable.appendChild(row);
+        });
+    }
+
+    function exportJSON() {
+        downloadFile(
+            JSON.stringify(matches, null, 2),
+            "lawn-bowls-matches.json",
+            "application/json"
+        );
+    }
+
+    function exportCSV() {
+        let csv = "Date,Team A,Score A,Team B,Score B\n";
+
+        matches.forEach(m => {
+            csv += `${m.date},${m.teamA},${m.scoreA},${m.teamB},${m.scoreB}\n`;
+        });
+
+        downloadFile(csv, "lawn-bowls-matches.csv", "text/csv");
+    }
+
+    function downloadFile(content, filename, type) {
+        const blob = new Blob([content], { type });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = filename;
+        link.click();
+    }
+
+    function clearAll() {
+        if (!confirm("Delete all match history?")) return;
+        matches = [];
+        saveAndRender();
+    }
+
+    renderTable();
+</script>
+
+</body>
+</html>

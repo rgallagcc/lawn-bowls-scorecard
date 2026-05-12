@@ -8,108 +8,344 @@
 
 <style>
 
+/* ================= THEMES ================= */
+
+:root {
+
+    --bg: #f4f4f4;
+    --card: #ffffff;
+    --text: #1f1f1f;
+    --border: #d9d9d9;
+    --accent: #2d6cdf;
+    --shadow: rgba(0,0,0,0.08);
+
+    --win: #d4edda;
+    --loss: #f8d7da;
+    --draw: #fff3cd;
+}
+
+[data-theme="dark"] {
+
+    --bg: #121212;
+    --card: #1f1f1f;
+    --text: #f1f1f1;
+    --border: #444;
+    --accent: #4d8eff;
+    --shadow: rgba(0,0,0,0.35);
+
+    --win: #21492d;
+    --loss: #552028;
+    --draw: #5b4d17;
+}
+
+[data-theme="paper"] {
+
+    --bg: #f5ecd9;
+    --card: #fffaf1;
+    --text: #4a3622;
+    --border: #c9b89d;
+    --accent: #8b5a2b;
+    --shadow: rgba(80,50,20,0.1);
+
+    --win: #d8ead2;
+    --loss: #efd0d0;
+    --draw: #f7edc9;
+}
+
+[data-theme="cyberpunk"] {
+
+    --bg: #0b0220;
+    --card: #16003a;
+    --text: #f5f500;
+    --border: #ff00ff;
+    --accent: #00f7ff;
+    --shadow: rgba(255,0,255,0.35);
+
+    --win: #003d20;
+    --loss: #4b001d;
+    --draw: #544600;
+}
+
+/* ================= BASE ================= */
+
+* {
+    box-sizing: border-box;
+}
+
 body {
+
+    margin: 0;
+    padding: 12px;
+
     font-family: Arial, sans-serif;
-    background: #f4f4f4;
-    margin: 20px;
+
+    background: var(--bg);
+    color: var(--text);
+
+    transition: 0.25s ease;
+}
+
+.container {
+
+    max-width: 1200px;
+    margin: auto;
 }
 
 h1,h2,h3 {
-    margin-bottom: 5px;
+
+    margin-top: 0;
 }
+
+/* ================= TOPBAR ================= */
+
+.topbar {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+
+    margin-bottom: 16px;
+}
+
+/* ================= CARDS ================= */
 
 .card {
-    background: #fff;
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+
+    background: var(--card);
+
+    border: 1px solid var(--border);
+
+    border-radius: 16px;
+
+    padding: 16px;
+
+    margin-bottom: 16px;
+
+    box-shadow:
+        0 4px 12px var(--shadow);
 }
+
+/* ================= GRID ================= */
+
+.grid-2 {
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+/* ================= FORMS ================= */
 
 label {
+
     display: block;
-    margin-top: 8px;
+    margin-top: 10px;
+    font-weight: 600;
 }
 
-input, textarea, select {
-    padding: 6px;
-    width: 250px;
+input,
+textarea,
+select {
+
+    width: 100%;
+
+    margin-top: 4px;
+
+    padding: 12px;
+
+    border-radius: 10px;
+
+    border: 1px solid var(--border);
+
+    background: var(--card);
+
+    color: var(--text);
+
+    font-size: 16px;
 }
+
+textarea {
+
+    resize: vertical;
+}
+
+/* ================= BUTTONS ================= */
 
 button {
-    margin-top: 10px;
-    padding: 6px 12px;
+
+    border: none;
+
+    background: var(--accent);
+
+    color: white;
+
+    padding: 12px 16px;
+
+    border-radius: 10px;
+
     cursor: pointer;
+
+    font-weight: bold;
+
+    margin-top: 10px;
+
+    transition: 0.2s ease;
+}
+
+button:hover {
+
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+/* ================= TABLES ================= */
+
+.table-wrapper {
+
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 table {
+
     width: 100%;
-    margin-top: 10px;
+
     border-collapse: collapse;
+
+    min-width: 650px;
 }
 
-th, td {
-    border: 1px solid #ccc;
-    padding: 6px;
+th,
+td {
+
+    border: 1px solid var(--border);
+
+    padding: 10px;
+
     text-align: center;
 }
 
 th {
-    background: #e0e0e0;
+
+    background: rgba(255,255,255,0.05);
 }
 
 .small {
+
     width: 70px;
 }
 
-.notice {
-    text-align: center;
-    font-style: italic;
-    color: #555;
+.actions button {
+
+    margin: 2px;
+    padding: 8px 10px;
 }
 
-.actions button {
-    margin: 2px;
+.notice {
+
+    padding: 16px;
+    text-align: center;
 }
 
 .win {
-    background: #d4edda;
+    background: var(--win);
 }
 
 .loss {
-    background: #f8d7da;
+    background: var(--loss);
 }
 
 .draw {
-    background: #fff3cd;
+    background: var(--draw);
 }
 
+/* ================= MODAL ================= */
+
 #matchModal {
+
     display: none;
+
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.6);
+
+    inset: 0;
+
+    background: rgba(0,0,0,0.75);
+
     overflow: auto;
+
+    padding: 12px;
+
     z-index: 1000;
 }
 
 .modal-box {
-    background: white;
-    width: 90%;
+
+    background: var(--card);
+
+    color: var(--text);
+
+    border: 1px solid var(--border);
+
+    border-radius: 16px;
+
     max-width: 900px;
-    margin: 40px auto;
+
+    margin: auto;
+
     padding: 20px;
-    border-radius: 10px;
+
     position: relative;
 }
 
 .close-btn {
+
     position: absolute;
+
     top: 10px;
     right: 10px;
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 768px) {
+
+    .grid-2 {
+
+        grid-template-columns: 1fr;
+    }
+
+    body {
+
+        padding: 8px;
+    }
+
+    .card {
+
+        padding: 12px;
+        border-radius: 12px;
+    }
+
+    button {
+
+        width: 100%;
+    }
+
+    .actions button {
+
+        width: auto;
+    }
+
+    h1 {
+
+        font-size: 1.5rem;
+    }
+
+    table {
+
+        min-width: 560px;
+    }
 }
 
 </style>
@@ -117,9 +353,35 @@ th {
 
 <body>
 
+<div class="container">
+
+<div class="topbar">
+
 <h1>🏏 Lawn Bowls – Advanced Scorecard</h1>
 
-<!-- ================= ADD / EDIT MATCH ================= -->
+<select id="themeSelector" onchange="changeTheme()">
+
+<option value="light">
+Light Mode
+</option>
+
+<option value="dark">
+Dark Mode
+</option>
+
+<option value="paper">
+Paper
+</option>
+
+<option value="cyberpunk">
+Cyberpunk
+</option>
+
+</select>
+
+</div>
+
+<!-- ================= ADD / EDIT ================= -->
 
 <div class="card">
 
@@ -127,40 +389,41 @@ th {
 
 <input type="hidden" id="editingId">
 
+<div class="grid-2">
+
+<div>
+
 <label>
 Date
 <input type="date" id="date">
 </label>
 
-<!-- ================= TEAM FORMAT ================= -->
+</div>
 
-<h3>Team Format / Size</h3>
+<div>
 
 <label>
 
+Team Format / Size
+
 <select id="teamFormat" onchange="updatePlayerFields()">
 
-    <option value="singles">
-        Singles (1 Player)
-    </option>
-
-    <option value="pairs">
-        Pairs (2 Players)
-    </option>
-
-    <option value="triples">
-        Triples (3 Players)
-    </option>
-
-    <option value="fours" selected>
-        Fours / Rinks (4 Players)
-    </option>
+<option value="singles">Singles</option>
+<option value="pairs">Pairs</option>
+<option value="triples">Triples</option>
+<option value="fours" selected>Fours / Rinks</option>
 
 </select>
 
 </label>
 
-<!-- ================= TEAM A ================= -->
+</div>
+
+</div>
+
+<div class="grid-2">
+
+<div>
 
 <h3>Team A</h3>
 
@@ -171,7 +434,9 @@ Team Name
 
 <div id="teamAPlayers"></div>
 
-<!-- ================= TEAM B ================= -->
+</div>
+
+<div>
 
 <h3>Team B</h3>
 
@@ -182,9 +447,13 @@ Team Name
 
 <div id="teamBPlayers"></div>
 
-<!-- ================= ENDS ================= -->
+</div>
+
+</div>
 
 <h3>Ends</h3>
+
+<div class="table-wrapper">
 
 <table id="endsTable">
 
@@ -201,16 +470,20 @@ Team Name
 
 </table>
 
-<button onclick="addEnd()">Add End</button>
+</div>
+
+<button onclick="addEnd()">
+Add End
+</button>
 
 <label>
 Match Notes
-<textarea id="notes" rows="3"></textarea>
+<textarea id="notes" rows="4"></textarea>
 </label>
 
-<br>
-
-<button onclick="saveMatch()">Save Match</button>
+<button onclick="saveMatch()">
+Save Match
+</button>
 
 </div>
 
@@ -220,10 +493,18 @@ Match Notes
 
 <h2>Filters</h2>
 
+<div class="grid-2">
+
+<div>
+
 <label>
 Filter by Team
 <input id="filterTeam" oninput="render()">
 </label>
+
+</div>
+
+<div>
 
 <label>
 From Date
@@ -237,11 +518,17 @@ To Date
 
 </div>
 
+</div>
+
+</div>
+
 <!-- ================= HISTORY ================= -->
 
 <div class="card">
 
 <h2>Match History</h2>
+
+<div class="table-wrapper">
 
 <table>
 
@@ -263,6 +550,8 @@ To Date
 
 </div>
 
+</div>
+
 <!-- ================= STATS ================= -->
 
 <div class="card">
@@ -279,38 +568,98 @@ To Date
 
 <h2>Import / Export</h2>
 
-<button onclick="exportJSON()">Export JSON</button>
+<div class="grid-2">
 
-<button onclick="exportCSV()">Export CSV</button>
+<div>
 
-<input type="file" accept=".json" onchange="importJSON(event)">
+<button onclick="exportJSON()">
+Export JSON
+</button>
 
-<button onclick="clearAll()">Clear All</button>
+<button onclick="exportCSV()">
+Export CSV
+</button>
+
+</div>
+
+<div>
+
+<input
+type="file"
+accept=".json"
+onchange="importJSON(event)"
+>
+
+<button onclick="clearAll()">
+Clear All
+</button>
+
+</div>
+
+</div>
 
 <p id="lastSaved"></p>
 
 </div>
 
-<!-- ================= MATCH DETAILS MODAL ================= -->
+<!-- ================= MODAL ================= -->
 
 <div id="matchModal">
 
-    <div class="modal-box">
+<div class="modal-box">
 
-        <button
-            class="close-btn"
-            onclick="closeModal()"
-        >
-            ✖
-        </button>
+<button
+class="close-btn"
+onclick="closeModal()"
+>
+✖
+</button>
 
-        <div id="modalContent"></div>
+<div id="modalContent"></div>
 
-    </div>
+</div>
+
+</div>
 
 </div>
 
 <script>
+
+/* ================= THEME ================= */
+
+function changeTheme() {
+
+    const theme =
+        themeSelector.value;
+
+    document.documentElement
+        .setAttribute(
+            "data-theme",
+            theme
+        );
+
+    localStorage.setItem(
+        "theme",
+        theme
+    );
+}
+
+function loadTheme() {
+
+    const saved =
+        localStorage.getItem("theme")
+        || "light";
+
+    document.documentElement
+        .setAttribute(
+            "data-theme",
+            saved
+        );
+
+    themeSelector.value = saved;
+}
+
+loadTheme();
 
 /* ================= ELEMENT REFERENCES ================= */
 
@@ -335,12 +684,9 @@ function loadStorage() {
         if (Array.isArray(saved)) {
 
             matches = saved;
-
         }
 
-    }
-
-    catch (err) {
+    } catch (err) {
 
         console.error("Storage load failed", err);
 
@@ -390,12 +736,24 @@ function updatePlayerFields() {
             break;
     }
 
-    renderPlayerInputs("teamAPlayers", "a", roles);
+    renderPlayerInputs(
+        "teamAPlayers",
+        "a",
+        roles
+    );
 
-    renderPlayerInputs("teamBPlayers", "b", roles);
+    renderPlayerInputs(
+        "teamBPlayers",
+        "b",
+        roles
+    );
 }
 
-function renderPlayerInputs(containerId, prefix, roles) {
+function renderPlayerInputs(
+    containerId,
+    prefix,
+    roles
+) {
 
     const container =
         document.getElementById(containerId);
@@ -427,9 +785,9 @@ function getPlayers(prefix) {
 
     inputs.forEach(input => {
 
-        players[input.id.replace(prefix, "")] =
-            input.value.trim();
-
+        players[
+            input.id.replace(prefix, "")
+        ] = input.value.trim();
     });
 
     return players;
@@ -439,9 +797,11 @@ function getPlayers(prefix) {
 
 function addEnd(a = 0, b = 0) {
 
-    const tbody = endsTable.tBodies[0];
+    const tbody =
+        endsTable.tBodies[0];
 
-    const row = document.createElement("tr");
+    const row =
+        document.createElement("tr");
 
     row.innerHTML = `
         <td>${tbody.rows.length + 1}</td>
@@ -471,10 +831,11 @@ function removeEnd(button) {
 
 function renumberEnds() {
 
-    [...endsTable.tBodies[0].rows].forEach((row, index) => {
+    [...endsTable.tBodies[0].rows]
+    .forEach((row, index) => {
 
-        row.cells[0].innerText = index + 1;
-
+        row.cells[0].innerText =
+            index + 1;
     });
 }
 
@@ -482,7 +843,10 @@ function renumberEnds() {
 
 function total(match, side) {
 
-    if (!match.ends || !Array.isArray(match.ends)) {
+    if (
+        !match.ends ||
+        !Array.isArray(match.ends)
+    ) {
 
         return 0;
     }
@@ -509,33 +873,41 @@ function saveMatch() {
         !teamB.value.trim()
     ) {
 
-        alert("Please enter a date and both team names.");
+        alert(
+            "Please enter a date and both team names."
+        );
 
         return;
     }
 
     const ends =
-        [...endsTable.tBodies[0].rows].map(r => ({
+        [...endsTable.tBodies[0].rows]
+        .map(r => ({
 
             a: Number(
-                r.cells[1].firstElementChild.value || 0
+                r.cells[1]
+                .firstElementChild.value || 0
             ),
 
             b: Number(
-                r.cells[2].firstElementChild.value || 0
+                r.cells[2]
+                .firstElementChild.value || 0
             )
 
         }));
 
     if (ends.length === 0) {
 
-        alert("Please add at least one end.");
+        alert(
+            "Please add at least one end."
+        );
 
         return;
     }
 
     const id =
-        editingId.value || Date.now().toString();
+        editingId.value
+        || Date.now().toString();
 
     const match = {
 
@@ -563,7 +935,8 @@ function saveMatch() {
 
         notes: notes.value.trim(),
 
-        created: new Date().toISOString()
+        created:
+            new Date().toISOString()
     };
 
     matches =
@@ -573,8 +946,8 @@ function saveMatch() {
 
     matches.push(match);
 
-    matches.sort((a, b) =>
-        new Date(b.date) - new Date(a.date)
+    matches.sort((a,b)=>
+        new Date(b.date)-new Date(a.date)
     );
 
     saveStorage();
@@ -600,7 +973,8 @@ function render() {
     let shotsAgainst = 0;
 
     const teamFilter =
-        (filterTeam.value || "").toLowerCase();
+        (filterTeam.value || "")
+        .toLowerCase();
 
     matches.forEach(m => {
 
@@ -621,22 +995,10 @@ function render() {
 
         if (
             teamFilter &&
-            !teamAName.toLowerCase().includes(teamFilter) &&
-            !teamBName.toLowerCase().includes(teamFilter)
-        ) {
-            return;
-        }
-
-        if (
-            fromDate.value &&
-            new Date(m.date) < new Date(fromDate.value)
-        ) {
-            return;
-        }
-
-        if (
-            toDate.value &&
-            new Date(m.date) > new Date(toDate.value)
+            !teamAName.toLowerCase()
+            .includes(teamFilter) &&
+            !teamBName.toLowerCase()
+            .includes(teamFilter)
         ) {
             return;
         }
@@ -669,21 +1031,17 @@ function render() {
             draws++;
         }
 
-        const row = document.createElement("tr");
+        const row =
+            document.createElement("tr");
 
         row.className = rowClass;
 
         row.innerHTML = `
             <td>${m.date || "-"}</td>
-
             <td>${teamAName}</td>
-
             <td>${a}</td>
-
             <td>${teamBName}</td>
-
             <td>${b}</td>
-
             <td>${winner}</td>
 
             <td class="actions">
@@ -710,7 +1068,8 @@ function render() {
 
     if (rowsRendered === 0) {
 
-        const row = document.createElement("tr");
+        const row =
+            document.createElement("tr");
 
         row.innerHTML = `
             <td colspan="7" class="notice">
@@ -734,11 +1093,13 @@ function render() {
 
         Shots For: ${shotsFor} |
         Shots Against: ${shotsAgainst} |
-        Difference: ${shotsFor - shotsAgainst}
+        Difference:
+        ${shotsFor - shotsAgainst}
 
         <br><br>
 
-        <b>Total Matches:</b> ${rowsRendered}
+        <b>Total Matches:</b>
+        ${rowsRendered}
     `;
 }
 
@@ -758,8 +1119,11 @@ function viewMatch(id) {
 
     let winner = "Draw";
 
-    if (a > b) winner = m.teamA.name;
-    else if (b > a) winner = m.teamB.name;
+    if (a > b)
+        winner = m.teamA.name;
+
+    else if (b > a)
+        winner = m.teamB.name;
 
     function renderPlayers(team) {
 
@@ -780,22 +1144,28 @@ function viewMatch(id) {
     }
 
     let endsHTML = `
-        <table style="width:100%; border-collapse:collapse; margin-top:10px;">
-            <thead>
-                <tr>
-                    <th>End</th>
-                    <th>${m.teamA.name}</th>
-                    <th>${m.teamB.name}</th>
-                </tr>
-            </thead>
-            <tbody>
+        <div class="table-wrapper">
+
+        <table>
+
+        <thead>
+
+        <tr>
+            <th>End</th>
+            <th>${m.teamA.name}</th>
+            <th>${m.teamB.name}</th>
+        </tr>
+
+        </thead>
+
+        <tbody>
     `;
 
-    m.ends.forEach((e, index) => {
+    m.ends.forEach((e,index)=>{
 
         endsHTML += `
             <tr>
-                <td>${index + 1}</td>
+                <td>${index+1}</td>
                 <td>${e.a}</td>
                 <td>${e.b}</td>
             </tr>
@@ -803,8 +1173,9 @@ function viewMatch(id) {
     });
 
     endsHTML += `
-            </tbody>
+        </tbody>
         </table>
+        </div>
     `;
 
     modalContent.innerHTML = `
@@ -822,7 +1193,7 @@ function viewMatch(id) {
 
         <p>
             <b>Format:</b>
-            ${capitalize(m.format || "fours")}
+            ${capitalize(m.format)}
         </p>
 
         <p>
@@ -878,8 +1249,8 @@ function closeModal() {
 
 function capitalize(text) {
 
-    return text.charAt(0).toUpperCase() +
-           text.slice(1);
+    return text.charAt(0).toUpperCase()
+        + text.slice(1);
 }
 
 /* ================= LOAD MATCH ================= */
@@ -905,39 +1276,47 @@ function loadMatch(id) {
     teamA.value = m.teamA.name || "";
     teamB.value = m.teamB.name || "";
 
-    teamFormat.value = m.format || "fours";
+    teamFormat.value =
+        m.format || "fours";
 
     updatePlayerFields();
 
     Object.entries(m.teamA.players || {})
-    .forEach(([role, value]) => {
+    .forEach(([role,value])=>{
 
         const input =
-            document.getElementById(`a${role}`);
+            document.getElementById(
+                `a${role}`
+            );
 
-        if (input) input.value = value;
+        if (input)
+            input.value = value;
     });
 
     Object.entries(m.teamB.players || {})
-    .forEach(([role, value]) => {
+    .forEach(([role,value])=>{
 
         const input =
-            document.getElementById(`b${role}`);
+            document.getElementById(
+                `b${role}`
+            );
 
-        if (input) input.value = value;
+        if (input)
+            input.value = value;
     });
 
     notes.value = m.notes || "";
 
     endsTable.tBodies[0].innerHTML = "";
 
-    m.ends.forEach(e => {
+    m.ends.forEach(e=>{
 
         addEnd(e.a, e.b);
 
     });
 
     window.scrollTo({
+
         top: 0,
         behavior: "smooth"
     });
@@ -947,7 +1326,9 @@ function loadMatch(id) {
 
 function deleteMatch(id) {
 
-    if (!confirm("Delete this match?")) {
+    if (
+        !confirm("Delete this match?")
+    ) {
 
         return;
     }
@@ -992,14 +1373,22 @@ function exportJSON() {
 
         version: 1,
 
-        exported: new Date().toISOString(),
+        exported:
+            new Date().toISOString(),
 
         matches
     };
 
     download(
-        JSON.stringify(exportData, null, 2),
+
+        JSON.stringify(
+            exportData,
+            null,
+            2
+        ),
+
         "matches.json",
+
         "application/json"
     );
 }
@@ -1013,32 +1402,40 @@ function exportCSV() {
 
     matches.forEach(m => {
 
-        const a = total(m, "a");
-
-        const b = total(m, "b");
+        const a = total(m,"a");
+        const b = total(m,"b");
 
         let winner = "Draw";
 
-        if (a > b) winner = m.teamA.name;
-        else if (b > a) winner = m.teamB.name;
+        if (a > b)
+            winner = m.teamA.name;
+
+        else if (b > a)
+            winner = m.teamB.name;
 
         csv +=
             `"${m.date}","${m.format}","${m.teamA.name}",${a},"${m.teamB.name}",${b},"${winner}"\n`;
 
     });
 
-    download(csv, "matches.csv", "text/csv");
+    download(
+        csv,
+        "matches.csv",
+        "text/csv"
+    );
 }
 
 /* ================= IMPORT JSON ================= */
 
 function importJSON(event) {
 
-    const file = event.target.files[0];
+    const file =
+        event.target.files[0];
 
     if (!file) return;
 
-    const reader = new FileReader();
+    const reader =
+        new FileReader();
 
     reader.onload = () => {
 
@@ -1050,21 +1447,26 @@ function importJSON(event) {
             const imported =
                 parsed.matches || parsed;
 
-            if (!Array.isArray(imported)) {
+            if (
+                !Array.isArray(imported)
+            ) {
 
-                alert("Invalid backup file.");
+                alert(
+                    "Invalid backup file."
+                );
 
                 return;
             }
 
-            matches = imported.filter(m =>
+            matches =
+                imported.filter(m =>
 
-                m &&
-                m.teamA &&
-                m.teamB &&
-                Array.isArray(m.ends)
+                    m &&
+                    m.teamA &&
+                    m.teamB &&
+                    Array.isArray(m.ends)
 
-            );
+                );
 
             saveStorage();
 
@@ -1073,9 +1475,8 @@ function importJSON(event) {
             alert(
                 `${matches.length} matches imported successfully.`
             );
-        }
 
-        catch (err) {
+        } catch (err) {
 
             console.error(err);
 

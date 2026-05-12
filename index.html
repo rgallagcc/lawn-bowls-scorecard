@@ -31,7 +31,7 @@ label {
     margin-top: 8px;
 }
 
-input, textarea {
+input, textarea, select {
     padding: 6px;
     width: 250px;
 }
@@ -104,6 +104,38 @@ Date
 <input type="date" id="date">
 </label>
 
+<!-- ================= TEAM FORMAT ================= -->
+
+<h3>Team Format / Size</h3>
+
+<label>
+
+Team Format / Size
+
+<select id="teamFormat" onchange="updatePlayerFields()">
+
+    <option value="singles">
+        Singles (1 Player)
+    </option>
+
+    <option value="pairs">
+        Pairs (2 Players)
+    </option>
+
+    <option value="triples">
+        Triples (3 Players)
+    </option>
+
+    <option value="fours" selected>
+        Fours / Rinks (4 Players)
+    </option>
+
+</select>
+
+</label>
+
+<!-- ================= TEAM A ================= -->
+
 <h3>Team A</h3>
 
 <label>
@@ -111,20 +143,9 @@ Team Name
 <input id="teamA">
 </label>
 
-<label>
-Lead
-<input id="aLead">
-</label>
+<div id="teamAPlayers"></div>
 
-<label>
-Second
-<input id="aSecond">
-</label>
-
-<label>
-Skip
-<input id="aSkip">
-</label>
+<!-- ================= TEAM B ================= -->
 
 <h3>Team B</h3>
 
@@ -133,20 +154,9 @@ Team Name
 <input id="teamB">
 </label>
 
-<label>
-Lead
-<input id="bLead">
-</label>
+<div id="teamBPlayers"></div>
 
-<label>
-Second
-<input id="bSecond">
-</label>
-
-<label>
-Skip
-<input id="bSkip">
-</label>
+<!-- ================= ENDS ================= -->
 
 <h3>Ends</h3>
 
@@ -306,6 +316,79 @@ function saveStorage() {
         new Date().toLocaleString();
 }
 
+/* ================= TEAM FORMAT ================= */
+
+function updatePlayerFields() {
+
+    const format = teamFormat.value;
+
+    let roles = [];
+
+    switch (format) {
+
+        case "singles":
+            roles = ["Single"];
+            break;
+
+        case "pairs":
+            roles = ["Lead", "Skip"];
+            break;
+
+        case "triples":
+            roles = ["Lead", "Second", "Skip"];
+            break;
+
+        case "fours":
+        default:
+            roles = ["Lead", "Second", "Third", "Skip"];
+            break;
+    }
+
+    renderPlayerInputs("teamAPlayers", "a", roles);
+
+    renderPlayerInputs("teamBPlayers", "b", roles);
+}
+
+function renderPlayerInputs(containerId, prefix, roles) {
+
+    const container =
+        document.getElementById(containerId);
+
+    container.innerHTML = "";
+
+    roles.forEach(role => {
+
+        const safeRole =
+            role.toLowerCase();
+
+        container.innerHTML += `
+            <label>
+                ${role}
+                <input id="${prefix}${safeRole}">
+            </label>
+        `;
+    });
+}
+
+function getPlayers(prefix) {
+
+    const inputs =
+        document.querySelectorAll(
+            `#team${prefix.toUpperCase()}Players input`
+        );
+
+    const players = {};
+
+    inputs.forEach(input => {
+
+        players[input.id.replace(prefix, "")] =
+            input.value.trim();
+
+    });
+
+    return players;
+}
+
 /* ================= END MANAGEMENT ================= */
 
 function addEnd(a = 0, b = 0) {
@@ -415,26 +498,20 @@ function saveMatch() {
 
         date: date.value,
 
+        format: teamFormat.value,
+
         teamA: {
 
             name: teamA.value.trim(),
 
-            players: {
-                lead: aLead.value.trim(),
-                second: aSecond.value.trim(),
-                skip: aSkip.value.trim()
-            }
+            players: getPlayers("a")
         },
 
         teamB: {
 
             name: teamB.value.trim(),
 
-            players: {
-                lead: bLead.value.trim(),
-                second: bSecond.value.trim(),
-                skip: bSkip.value.trim()
-            }
+            players: getPlayers("b")
         },
 
         ends,
@@ -497,8 +574,6 @@ function render() {
         const teamBName =
             m.teamB.name || "Unknown";
 
-        // Filters
-
         if (
             teamFilter &&
             !teamAName.toLowerCase().includes(teamFilter) &&
@@ -507,11 +582,17 @@ function render() {
             return;
         }
 
-        if ( fromDate.value && new Date(m.date) < new Date(fromDate.value)) {
+        if (
+            fromDate.value &&
+            new Date(m.date) < new Date(fromDate.value)
+        ) {
             return;
         }
 
-        if (toDate.value && new Date(m.date) > new Date(toDate.value)) {
+        if (
+            toDate.value &&
+            new Date(m.date) > new Date(toDate.value)
+        ) {
             return;
         }
 
@@ -544,19 +625,23 @@ function render() {
 
         }
 
-        // CREATE ROW SAFELY
-
         const row = document.createElement("tr");
 
         row.className = rowClass;
 
         row.innerHTML = `
             <td>${m.date || "-"}</td>
+
             <td>${teamAName}</td>
+
             <td>${a}</td>
+
             <td>${teamBName}</td>
+
             <td>${b}</td>
+
             <td>${winner}</td>
+
             <td class="actions">
 
                 <button onclick="loadMatch('${m.id}')">
@@ -575,8 +660,6 @@ function render() {
         rowsRendered++;
     });
 
-    // EMPTY MESSAGE
-
     if (rowsRendered === 0) {
 
         const row = document.createElement("tr");
@@ -589,8 +672,6 @@ function render() {
 
         historyTable.appendChild(row);
     }
-
-    // STATS
 
     stats.innerHTML = `
         <b>Results</b><br>
@@ -636,13 +717,27 @@ function loadMatch(id) {
     teamA.value = m.teamA.name || "";
     teamB.value = m.teamB.name || "";
 
-    aLead.value = m.teamA.players?.lead || "";
-    aSecond.value = m.teamA.players?.second || "";
-    aSkip.value = m.teamA.players?.skip || "";
+    teamFormat.value = m.format || "fours";
 
-    bLead.value = m.teamB.players?.lead || "";
-    bSecond.value = m.teamB.players?.second || "";
-    bSkip.value = m.teamB.players?.skip || "";
+    updatePlayerFields();
+
+    Object.entries(m.teamA.players || {})
+    .forEach(([role, value]) => {
+
+        const input =
+            document.getElementById(`a${role}`);
+
+        if (input) input.value = value;
+    });
+
+    Object.entries(m.teamB.players || {})
+    .forEach(([role, value]) => {
+
+        const input =
+            document.getElementById(`b${role}`);
+
+        if (input) input.value = value;
+    });
 
     notes.value = m.notes || "";
 
@@ -690,15 +785,11 @@ function clearForm() {
     teamA.value = "";
     teamB.value = "";
 
-    aLead.value = "";
-    aSecond.value = "";
-    aSkip.value = "";
-
-    bLead.value = "";
-    bSecond.value = "";
-    bSkip.value = "";
-
     notes.value = "";
+
+    teamFormat.value = "fours";
+
+    updatePlayerFields();
 
     endsTable.tBodies[0].innerHTML = "";
 
@@ -730,7 +821,7 @@ function exportJSON() {
 function exportCSV() {
 
     let csv =
-        "Date,TeamA,ScoreA,TeamB,ScoreB,Winner\n";
+        "Date,Format,TeamA,ScoreA,TeamB,ScoreB,Winner\n";
 
     matches.forEach(m => {
 
@@ -744,7 +835,7 @@ function exportCSV() {
         else if (b > a) winner = m.teamB.name;
 
         csv +=
-            `"${m.date}","${m.teamA.name}",${a},"${m.teamB.name}",${b},"${winner}"\n`;
+            `"${m.date}","${m.format}","${m.teamA.name}",${a},"${m.teamB.name}",${b},"${winner}"\n`;
 
     });
 
@@ -852,6 +943,8 @@ function download(data, name, type) {
 }
 
 /* ================= INITIALISE ================= */
+
+updatePlayerFields();
 
 clearForm();
 

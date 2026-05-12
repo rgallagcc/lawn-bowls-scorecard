@@ -7,6 +7,7 @@
 <title>Lawn Bowls – Advanced Scorecard</title>
 
 <style>
+
 body {
     font-family: Arial, sans-serif;
     background: #f4f4f4;
@@ -82,6 +83,7 @@ th {
 .draw {
     background: #fff3cd;
 }
+
 </style>
 </head>
 
@@ -90,6 +92,7 @@ th {
 <h1>🏏 Lawn Bowls – Advanced Scorecard</h1>
 
 <!-- ================= ADD / EDIT MATCH ================= -->
+
 <div class="card">
 
 <h2>Add / Edit Match</h2>
@@ -148,6 +151,7 @@ Skip
 <h3>Ends</h3>
 
 <table id="endsTable">
+
 <thead>
 <tr>
 <th>End</th>
@@ -158,6 +162,7 @@ Skip
 </thead>
 
 <tbody></tbody>
+
 </table>
 
 <button onclick="addEnd()">Add End</button>
@@ -174,6 +179,7 @@ Match Notes
 </div>
 
 <!-- ================= FILTERS ================= -->
+
 <div class="card">
 
 <h2>Filters</h2>
@@ -196,6 +202,7 @@ To Date
 </div>
 
 <!-- ================= HISTORY ================= -->
+
 <div class="card">
 
 <h2>Match History</h2>
@@ -214,13 +221,14 @@ To Date
 </tr>
 </thead>
 
-<tbody id="history"></tbody>
+<tbody id="matchHistory"></tbody>
 
 </table>
 
 </div>
 
 <!-- ================= STATS ================= -->
+
 <div class="card">
 
 <h2>Statistics</h2>
@@ -230,11 +238,13 @@ To Date
 </div>
 
 <!-- ================= IMPORT / EXPORT ================= -->
+
 <div class="card">
 
 <h2>Import / Export</h2>
 
 <button onclick="exportJSON()">Export JSON</button>
+
 <button onclick="exportCSV()">Export CSV</button>
 
 <input type="file" accept=".json" onchange="importJSON(event)">
@@ -246,6 +256,11 @@ To Date
 </div>
 
 <script>
+
+/* ================= ELEMENT REFERENCES ================= */
+
+const historyTable =
+    document.getElementById("matchHistory");
 
 /* ================= STORAGE ================= */
 
@@ -259,15 +274,19 @@ function loadStorage() {
 
     try {
 
-        const saved = JSON.parse(localStorage.getItem("matches"));
+        const saved =
+            JSON.parse(localStorage.getItem("matches"));
 
         if (Array.isArray(saved)) {
+
             matches = saved;
+
         }
 
     } catch (err) {
 
         console.error("Storage load failed", err);
+
         matches = [];
 
     }
@@ -335,7 +354,9 @@ function renumberEnds() {
 function total(match, side) {
 
     if (!match.ends || !Array.isArray(match.ends)) {
+
         return 0;
+
     }
 
     return match.ends.reduce((sum, end) => {
@@ -361,24 +382,32 @@ function saveMatch() {
     ) {
 
         alert("Please enter a date and both team names.");
+
         return;
     }
 
-    const ends = [...endsTable.tBodies[0].rows].map(r => ({
+    const ends =
+        [...endsTable.tBodies[0].rows].map(r => ({
 
-        a: Number(r.cells[1].firstElementChild.value || 0),
+            a: Number(
+                r.cells[1].firstElementChild.value || 0
+            ),
 
-        b: Number(r.cells[2].firstElementChild.value || 0)
+            b: Number(
+                r.cells[2].firstElementChild.value || 0
+            )
 
-    }));
+        }));
 
     if (ends.length === 0) {
 
         alert("Please add at least one end.");
+
         return;
     }
 
-    const id = editingId.value || Date.now().toString();
+    const id =
+        editingId.value || Date.now().toString();
 
     const match = {
 
@@ -415,7 +444,10 @@ function saveMatch() {
         created: new Date().toISOString()
     };
 
-    matches = matches.filter(m => String(m.id) !== String(id));
+    matches =
+        matches.filter(
+            m => String(m.id) !== String(id)
+        );
 
     matches.push(match);
 
@@ -434,7 +466,7 @@ function saveMatch() {
 
 function render() {
 
-    history.innerHTML = "";
+    historyTable.innerHTML = "";
 
     let rowsRendered = 0;
 
@@ -456,11 +488,15 @@ function render() {
             !m.teamB ||
             !Array.isArray(m.ends)
         ) {
+
             return;
         }
 
-        const teamAName = m.teamA.name || "Unknown";
-        const teamBName = m.teamB.name || "Unknown";
+        const teamAName =
+            m.teamA.name || "Unknown";
+
+        const teamBName =
+            m.teamB.name || "Unknown";
 
         if (
             teamFilter &&
@@ -468,37 +504,55 @@ function render() {
             !teamBName.toLowerCase().includes(teamFilter)
         ) return;
 
-        if (fromDate.value && m.date < fromDate.value) return;
-        if (toDate.value && m.date > toDate.value) return;
+        if (
+            fromDate.value &&
+            m.date < fromDate.value
+        ) return;
+
+        if (
+            toDate.value &&
+            m.date > toDate.value
+        ) return;
 
         const a = total(m, "a");
+
         const b = total(m, "b");
 
         shotsFor += a;
+
         shotsAgainst += b;
 
         let winner = "Draw";
+
         let rowClass = "draw";
 
         if (a > b) {
 
             winner = teamAName;
+
             wins++;
+
             rowClass = "win";
 
-        } else if (b > a) {
+        }
+
+        else if (b > a) {
 
             winner = teamBName;
+
             losses++;
+
             rowClass = "loss";
 
-        } else {
+        }
+
+        else {
 
             draws++;
 
         }
 
-        history.innerHTML += `
+        historyTable.innerHTML += `
         <tr class="${rowClass}">
 
             <td>${m.date || "-"}</td>
@@ -533,7 +587,7 @@ function render() {
 
     if (rowsRendered === 0) {
 
-        history.innerHTML = `
+        historyTable.innerHTML = `
         <tr>
             <td colspan="7" class="notice">
                 No matches match the current filters.
@@ -567,12 +621,15 @@ function render() {
 
 function loadMatch(id) {
 
-    const m = matches.find(
-        x => String(x.id) === String(id)
-    );
+    const m =
+        matches.find(
+            x => String(x.id) === String(id)
+        );
 
     if (!m) {
+
         alert("Match not found.");
+
         return;
     }
 
@@ -612,12 +669,14 @@ function loadMatch(id) {
 function deleteMatch(id) {
 
     if (!confirm("Delete this match?")) {
+
         return;
     }
 
-    matches = matches.filter(
-        m => String(m.id) !== String(id)
-    );
+    matches =
+        matches.filter(
+            m => String(m.id) !== String(id)
+        );
 
     saveStorage();
 
@@ -661,15 +720,11 @@ function exportJSON() {
         exported: new Date().toISOString(),
 
         matches
-
     };
 
     download(
-
         JSON.stringify(exportData, null, 2),
-
         "matches.json",
-
         "application/json"
     );
 }
@@ -684,6 +739,7 @@ function exportCSV() {
     matches.forEach(m => {
 
         const a = total(m, "a");
+
         const b = total(m, "b");
 
         let winner = "Draw";
@@ -713,7 +769,8 @@ function importJSON(event) {
 
         try {
 
-            const parsed = JSON.parse(reader.result);
+            const parsed =
+                JSON.parse(reader.result);
 
             const imported =
                 parsed.matches || parsed;
@@ -721,6 +778,7 @@ function importJSON(event) {
             if (!Array.isArray(imported)) {
 
                 alert("Invalid backup file.");
+
                 return;
             }
 
@@ -741,7 +799,9 @@ function importJSON(event) {
                 `${matches.length} matches imported successfully.`
             );
 
-        } catch (err) {
+        }
+
+        catch (err) {
 
             console.error(err);
 
@@ -779,11 +839,14 @@ function clearAll() {
 
 function download(data, name, type) {
 
-    const blob = new Blob([data], { type });
+    const blob =
+        new Blob([data], { type });
 
-    const a = document.createElement("a");
+    const a =
+        document.createElement("a");
 
-    a.href = URL.createObjectURL(blob);
+    a.href =
+        URL.createObjectURL(blob);
 
     a.download = name;
 

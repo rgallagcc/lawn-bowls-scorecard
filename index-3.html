@@ -1,0 +1,1821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Lawn Bowls – Advanced Scorecard</title>
+
+<style>
+
+/* ================= THEMES ================= */
+
+:root {
+
+    --bg: #f4f4f4;
+    --card: #ffffff;
+    --text: #1f1f1f;
+    --border: #d9d9d9;
+    --accent: #2d6cdf;
+    --shadow: rgba(0,0,0,0.08);
+
+    --win: #d4edda;
+    --loss: #f8d7da;
+    --draw: #fff3cd;
+}
+
+[data-theme="dark"] {
+
+    --bg: #121212;
+    --card: #1f1f1f;
+    --text: #f1f1f1;
+    --border: #444;
+    --accent: #4d8eff;
+    --shadow: rgba(0,0,0,0.35);
+
+    --win: #21492d;
+    --loss: #552028;
+    --draw: #5b4d17;
+}
+
+[data-theme="paper"] {
+
+    --bg: #f5ecd9;
+    --card: #fffaf1;
+    --text: #4a3622;
+    --border: #c9b89d;
+    --accent: #8b5a2b;
+    --shadow: rgba(80,50,20,0.1);
+
+    --win: #d8ead2;
+    --loss: #efd0d0;
+    --draw: #f7edc9;
+}
+
+[data-theme="cyberpunk"] {
+
+    --bg: #0b0220;
+    --card: #16003a;
+    --text: #f5f500;
+    --border: #ff00ff;
+    --accent: #00f7ff;
+    --shadow: rgba(255,0,255,0.35);
+
+    --win: #003d20;
+    --loss: #4b001d;
+    --draw: #544600;
+}
+
+/* ================= BASE ================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+
+    margin: 0;
+    padding: 12px;
+
+    font-family: Arial, sans-serif;
+
+    background: var(--bg);
+    color: var(--text);
+
+    transition: 0.25s ease;
+}
+
+.container {
+
+    max-width: 1200px;
+    margin: auto;
+}
+
+h1,h2,h3 {
+
+    margin-top: 0;
+}
+
+/* ================= TOPBAR ================= */
+
+.topbar {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+
+    margin-bottom: 16px;
+}
+
+/* ================= CARDS ================= */
+
+.card {
+
+    background: var(--card);
+
+    border: 1px solid var(--border);
+
+    border-radius: 16px;
+
+    padding: 16px;
+
+    margin-bottom: 16px;
+
+    box-shadow:
+        0 4px 12px var(--shadow);
+}
+
+/* ================= GRID ================= */
+
+.grid-2 {
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+/* ================= FORMS ================= */
+
+label {
+
+    display: block;
+    margin-top: 10px;
+    font-weight: 600;
+}
+
+input,
+textarea,
+select {
+
+    width: 100%;
+
+    margin-top: 4px;
+
+    padding: 12px;
+
+    border-radius: 10px;
+
+    border: 1px solid var(--border);
+
+    background: var(--card);
+
+    color: var(--text);
+
+    font-size: 16px;
+}
+
+textarea {
+
+    resize: vertical;
+}
+
+/* ================= BUTTONS ================= */
+
+button {
+
+    border: none;
+
+    background: var(--accent);
+
+    color: white;
+
+    padding: 12px 16px;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+
+    margin-top: 10px;
+
+    transition: 0.2s ease;
+}
+
+button:hover {
+
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+/* ================= TABLES ================= */
+
+.table-wrapper {
+
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+table {
+
+    width: 100%;
+
+    border-collapse: collapse;
+}
+
+/* History table needs min-width so desktop columns don't squash */
+.desktop-history table {
+    min-width: 600px;
+}
+
+th,
+td {
+
+    border: 1px solid var(--border);
+
+    padding: 10px;
+
+    text-align: center;
+}
+
+th {
+
+    background: rgba(255,255,255,0.05);
+}
+
+.small {
+
+    width: 70px;
+}
+
+.actions button {
+
+    margin: 2px;
+    padding: 8px 10px;
+}
+
+.notice {
+
+    padding: 16px;
+    text-align: center;
+}
+
+.win {
+    background: var(--win);
+}
+
+.loss {
+    background: var(--loss);
+}
+
+.draw {
+    background: var(--draw);
+}
+
+/* ================= ENDS COLUMN HINT (mobile) ================= */
+
+.ends-col-hint {
+    display: none;
+}
+
+@media (max-width: 600px) {
+
+    .ends-col-hint {
+        display: grid;
+        grid-template-columns: 32px 1fr 1fr 44px;
+        gap: 4px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        opacity: 0.6;
+        padding: 4px 2px 2px;
+        text-align: center;
+    }
+}
+
+/* ================= ENDS TABLE MOBILE ================= */
+
+@media (max-width: 600px) {
+
+    /* Ends entry table: stack into compact rows */
+    #endsTable thead {
+        display: none;
+    }
+
+    #endsTable tr {
+        display: grid;
+        grid-template-columns: 32px 1fr 1fr 44px;
+        gap: 4px;
+        align-items: center;
+        border-bottom: 1px solid var(--border);
+        padding: 6px 0;
+    }
+
+    #endsTable td {
+        border: none;
+        padding: 4px 2px;
+    }
+
+    #endsTable td:first-child {
+        font-size: 0;
+    }
+
+    #endsTable td:first-child::before {
+        content: "#" attr(data-end);
+        font-weight: bold;
+        font-size: 0.85rem;
+    }
+
+    #endsTable input.small {
+        width: 100%;
+    }
+
+    #endsTable .small {
+        width: 100%;
+    }
+}
+
+/* ================= MOBILE MATCH CARDS ================= */
+
+.mobile-history {
+
+    display: none;
+}
+
+.match-card {
+
+    background: var(--card);
+
+    border: 1px solid var(--border);
+
+    border-radius: 14px;
+
+    padding: 14px;
+
+    margin-bottom: 12px;
+
+    box-shadow:
+        0 2px 6px var(--shadow);
+}
+
+.match-card-header {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 10px;
+
+    font-size: 0.9rem;
+
+    opacity: 0.85;
+}
+
+.match-score {
+
+    font-size: 1.2rem;
+    font-weight: bold;
+
+    margin: 10px 0;
+}
+
+.match-meta {
+
+    margin-top: 8px;
+
+    font-size: 0.92rem;
+
+    line-height: 1.5;
+}
+
+.match-actions {
+
+    display: flex;
+
+    gap: 8px;
+
+    margin-top: 12px;
+}
+
+.match-actions button {
+
+    flex: 1;
+}
+
+@media (max-width: 768px) {
+
+    .desktop-history {
+
+        display: none;
+    }
+
+    .mobile-history {
+
+        display: block;
+    }
+}
+
+/* ================= MODAL ENDS TABLE ================= */
+
+.modal-box .table-wrapper table {
+    min-width: 0;
+}
+
+/* ================= MODAL ================= */
+
+#matchModal {
+
+    display: none;
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0,0,0,0.75);
+
+    overflow: auto;
+
+    padding: 12px;
+
+    z-index: 1000;
+}
+
+.modal-box {
+
+    background: var(--card);
+
+    color: var(--text);
+
+    border: 1px solid var(--border);
+
+    border-radius: 16px;
+
+    max-width: 900px;
+
+    margin: auto;
+
+    padding: 20px;
+
+    position: relative;
+}
+
+.close-btn {
+
+    position: absolute;
+
+    top: 10px;
+    right: 10px;
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 768px) {
+
+    .grid-2 {
+
+        grid-template-columns: 1fr;
+    }
+
+    body {
+
+        padding: 8px;
+    }
+
+    .card {
+
+        padding: 12px;
+        border-radius: 12px;
+    }
+
+    button {
+
+        width: 100%;
+    }
+
+    .actions button {
+
+        width: auto;
+    }
+
+    h1 {
+
+        font-size: 1.5rem;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="topbar">
+
+<h1>🏏 Lawn Bowls – Advanced Scorecard</h1>
+
+<select id="themeSelector" onchange="changeTheme()">
+
+<option value="light">
+Light Mode
+</option>
+
+<option value="dark">
+Dark Mode
+</option>
+
+<option value="paper">
+Paper
+</option>
+
+<option value="cyberpunk">
+Cyberpunk
+</option>
+
+</select>
+
+</div>
+
+<!-- ================= ADD / EDIT ================= -->
+
+<div class="card">
+
+<h2>Add / Edit Match</h2>
+
+<input type="hidden" id="editingId">
+
+<div class="grid-2">
+
+<div>
+
+<label>
+Date
+<input type="date" id="date">
+</label>
+
+</div>
+
+<div>
+
+<label>
+
+Team Format / Size
+
+<select id="teamFormat" onchange="updatePlayerFields()">
+
+<option value="singles" selected>Singles</option>
+<option value="pairs">Pairs</option>
+<option value="triples">Triples</option>
+<option value="fours" >Fours / Rinks</option>
+
+</select>
+
+</label>
+
+</div>
+
+</div>
+
+<div class="grid-2">
+
+<div>
+
+<h3>Team A</h3>
+
+<label>
+Team Name
+<input id="teamA">
+</label>
+
+<div id="teamAPlayers"></div>
+
+</div>
+
+<div>
+
+<h3>Team B</h3>
+
+<label>
+Team Name
+<input id="teamB">
+</label>
+
+<div id="teamBPlayers"></div>
+
+</div>
+
+</div>
+
+<h3>Ends</h3>
+
+<div class="ends-col-hint">
+    <span>#</span>
+    <span>Team A</span>
+    <span>Team B</span>
+    <span></span>
+</div>
+
+<div class="table-wrapper">
+
+<table id="endsTable">
+
+<thead>
+<tr>
+<th>End</th>
+<th>Team A</th>
+<th>Team B</th>
+<th>Remove</th>
+</tr>
+</thead>
+
+<tbody></tbody>
+
+</table>
+
+</div>
+
+<button onclick="addEnd()">
+Add End
+</button>
+
+<label>
+Match Notes
+<textarea id="notes" rows="4"></textarea>
+</label>
+
+<button onclick="saveMatch()">
+Save Match
+</button>
+
+</div>
+
+<!-- ================= FILTERS ================= -->
+
+<div class="card">
+
+<h2>Filters</h2>
+
+<div class="grid-2">
+
+<div>
+
+<label>
+Filter by Team
+<input id="filterTeam" oninput="render()">
+</label>
+
+</div>
+
+<div>
+
+<label>
+From Date
+<input type="date" id="fromDate" onchange="render()">
+</label>
+
+<label>
+To Date
+<input type="date" id="toDate" onchange="render()">
+</label>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= MATCH HISTORY ================= -->
+
+<div class="card">
+
+<h2>Match History</h2>
+
+<!-- ================= DESKTOP TABLE ================= -->
+
+<div class="desktop-history">
+
+<div class="table-wrapper">
+
+<table>
+
+<thead>
+<tr>
+<th>Date</th>
+<th>Team A</th>
+<th>Score</th>
+<th>Team B</th>
+<th>Score</th>
+<th>Winner</th>
+<th>Actions</th>
+</tr>
+</thead>
+
+<tbody id="matchHistory"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<!-- ================= MOBILE CARDS ================= -->
+
+<div
+    id="mobileMatchCards"
+    class="mobile-history"
+></div>
+
+</div>
+<!-- ================= STATS ================= -->
+
+<div class="card">
+
+<h2>Statistics</h2>
+
+<div id="stats"></div>
+
+</div>
+
+<!-- ================= IMPORT / EXPORT ================= -->
+
+<div class="card">
+
+<h2>Import / Export</h2>
+
+<div class="grid-2">
+
+<div>
+
+<button onclick="exportJSON()">
+Export JSON
+</button>
+
+<button onclick="exportCSV()">
+Export CSV
+</button>
+
+</div>
+
+<div>
+
+<input
+type="file"
+accept=".json"
+onchange="importJSON(event)"
+>
+
+<button onclick="clearAll()">
+Clear All
+</button>
+
+</div>
+
+</div>
+
+<p id="lastSaved"></p>
+
+</div>
+
+<!-- ================= MODAL ================= -->
+
+<div id="matchModal">
+
+<div class="modal-box">
+
+<button
+class="close-btn"
+onclick="closeModal()"
+>
+✖
+</button>
+
+<div id="modalContent"></div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+/* ================= THEME ================= */
+
+function changeTheme() {
+
+    const theme =
+        themeSelector.value;
+
+    document.documentElement
+        .setAttribute(
+            "data-theme",
+            theme
+        );
+
+    localStorage.setItem(
+        "theme",
+        theme
+    );
+}
+
+function loadTheme() {
+
+    const saved =
+        localStorage.getItem("theme")
+        || "light";
+
+    document.documentElement
+        .setAttribute(
+            "data-theme",
+            saved
+        );
+
+    themeSelector.value = saved;
+}
+
+loadTheme();
+
+/* ================= ELEMENT REFERENCES ================= */
+
+const historyTable =
+    document.getElementById("matchHistory");
+
+/* ================= STORAGE ================= */
+
+let matches = [];
+
+loadStorage();
+
+/* ================= LOAD STORAGE ================= */
+
+function loadStorage() {
+
+    try {
+
+        const saved =
+            JSON.parse(localStorage.getItem("matches"));
+
+        if (Array.isArray(saved)) {
+
+            matches = saved;
+        }
+
+    } catch (err) {
+
+        console.error("Storage load failed", err);
+
+        matches = [];
+    }
+}
+
+/* ================= SAVE STORAGE ================= */
+
+function saveStorage() {
+
+    localStorage.setItem(
+        "matches",
+        JSON.stringify(matches)
+    );
+
+    lastSaved.innerHTML =
+        "Last saved: " +
+        new Date().toLocaleString();
+}
+
+/* ================= TEAM FORMAT ================= */
+
+function updatePlayerFields() {
+
+    const format = teamFormat.value;
+
+    let roles = [];
+
+    switch (format) {
+
+        case "singles":
+            roles = ["Single"];
+            break;
+
+        case "pairs":
+            roles = ["Lead", "Skip"];
+            break;
+
+        case "triples":
+            roles = ["Lead", "Second", "Skip"];
+            break;
+
+        case "fours":
+        default:
+            roles = ["Lead", "Second", "Third", "Skip"];
+            break;
+    }
+
+    renderPlayerInputs(
+        "teamAPlayers",
+        "a",
+        roles
+    );
+
+    renderPlayerInputs(
+        "teamBPlayers",
+        "b",
+        roles
+    );
+}
+
+function renderPlayerInputs(
+    containerId,
+    prefix,
+    roles
+) {
+
+    const container =
+        document.getElementById(containerId);
+
+    container.innerHTML = "";
+
+    roles.forEach(role => {
+
+        const safeRole =
+            role.toLowerCase();
+
+        container.innerHTML += `
+            <label>
+                ${role}
+                <input id="${prefix}${safeRole}">
+            </label>
+        `;
+    });
+}
+
+function getPlayers(prefix) {
+
+    const inputs =
+        document.querySelectorAll(
+            `#team${prefix.toUpperCase()}Players input`
+        );
+
+    const players = {};
+
+    inputs.forEach(input => {
+
+        players[
+            input.id.replace(prefix, "")
+        ] = input.value.trim();
+    });
+
+    return players;
+}
+
+/* ================= END MANAGEMENT ================= */
+
+function addEnd(a = 0, b = 0) {
+
+    const tbody =
+        endsTable.tBodies[0];
+
+    const row =
+        document.createElement("tr");
+
+    const endNum = tbody.rows.length + 1;
+
+    row.innerHTML = `
+        <td data-end="${endNum}">${endNum}</td>
+
+        <td>
+            <input class="small" type="number" min="0" value="${a}">
+        </td>
+
+        <td>
+            <input class="small" type="number" min="0" value="${b}">
+        </td>
+
+        <td>
+            <button onclick="removeEnd(this)">❌</button>
+        </td>
+    `;
+
+    tbody.appendChild(row);
+}
+
+function removeEnd(button) {
+
+    button.closest("tr").remove();
+
+    renumberEnds();
+}
+
+function renumberEnds() {
+
+    [...endsTable.tBodies[0].rows]
+    .forEach((row, index) => {
+
+        row.cells[0].innerText = index + 1;
+        row.cells[0].setAttribute("data-end", index + 1);
+    });
+}
+
+/* ================= TOTALS ================= */
+
+function total(match, side) {
+
+    if (
+        !match.ends ||
+        !Array.isArray(match.ends)
+    ) {
+
+        return 0;
+    }
+
+    return match.ends.reduce((sum, end) => {
+
+        const value =
+            side === "a"
+            ? Number(end.a || 0)
+            : Number(end.b || 0);
+
+        return sum + value;
+
+    }, 0);
+}
+
+/* ================= SAVE MATCH ================= */
+
+function saveMatch() {
+
+    if (
+        !date.value ||
+        !teamA.value.trim() ||
+        !teamB.value.trim()
+    ) {
+
+        alert(
+            "Please enter a date and both team names."
+        );
+
+        return;
+    }
+
+    const ends =
+        [...endsTable.tBodies[0].rows]
+        .map(r => ({
+
+            a: Number(
+                r.cells[1]
+                .firstElementChild.value || 0
+            ),
+
+            b: Number(
+                r.cells[2]
+                .firstElementChild.value || 0
+            )
+
+        }));
+
+    if (ends.length === 0) {
+
+        alert(
+            "Please add at least one end."
+        );
+
+        return;
+    }
+
+    const id =
+        editingId.value
+        || Date.now().toString();
+
+    const match = {
+
+        id,
+
+        date: date.value,
+
+        format: teamFormat.value,
+
+        teamA: {
+
+            name: teamA.value.trim(),
+
+            players: getPlayers("a")
+        },
+
+        teamB: {
+
+            name: teamB.value.trim(),
+
+            players: getPlayers("b")
+        },
+
+        ends,
+
+        notes: notes.value.trim(),
+
+        created:
+            new Date().toISOString()
+    };
+
+    matches =
+        matches.filter(
+            m => String(m.id) !== String(id)
+        );
+
+    matches.push(match);
+
+    matches.sort((a,b)=>
+        new Date(b.date)-new Date(a.date)
+    );
+
+    saveStorage();
+
+    clearForm();
+
+    render();
+}
+
+/* ================= RENDER ================= */
+
+function render() {
+
+    historyTable.innerHTML = "";
+
+    const mobileCards =
+        document.getElementById(
+            "mobileMatchCards"
+        );
+
+    mobileCards.innerHTML = "";
+
+    let rowsRendered = 0;
+
+    let wins = 0;
+    let losses = 0;
+    let draws = 0;
+
+    let shotsFor = 0;
+    let shotsAgainst = 0;
+
+    const teamFilter =
+        (filterTeam.value || "")
+        .toLowerCase();
+
+    matches.forEach(m => {
+
+        if (
+            !m ||
+            !m.teamA ||
+            !m.teamB ||
+            !Array.isArray(m.ends)
+        ) {
+            return;
+        }
+
+        const teamAName =
+            m.teamA.name || "Unknown";
+
+        const teamBName =
+            m.teamB.name || "Unknown";
+
+        if (
+            teamFilter &&
+            !teamAName.toLowerCase()
+            .includes(teamFilter) &&
+            !teamBName.toLowerCase()
+            .includes(teamFilter)
+        ) {
+            return;
+        }
+
+        if (
+            fromDate.value &&
+            new Date(m.date)
+            < new Date(fromDate.value)
+        ) {
+            return;
+        }
+
+        if (
+            toDate.value &&
+            new Date(m.date)
+            > new Date(toDate.value)
+        ) {
+            return;
+        }
+
+        const a = total(m, "a");
+        const b = total(m, "b");
+
+        shotsFor += a;
+        shotsAgainst += b;
+
+        let winner = "Draw";
+        let rowClass = "draw";
+
+        if (a > b) {
+
+            winner = teamAName;
+            wins++;
+            rowClass = "win";
+        }
+
+        else if (b > a) {
+
+            winner = teamBName;
+            losses++;
+            rowClass = "loss";
+        }
+
+        else {
+
+            draws++;
+        }
+
+        /* ================= DESKTOP TABLE ================= */
+
+        const row =
+            document.createElement("tr");
+
+        row.className = rowClass;
+
+        row.innerHTML = `
+            <td>${m.date || "-"}</td>
+
+            <td>${teamAName}</td>
+
+            <td>${a}</td>
+
+            <td>${teamBName}</td>
+
+            <td>${b}</td>
+
+            <td>${winner}</td>
+
+            <td class="actions">
+
+                <button onclick="viewMatch('${m.id}')">
+                    👁
+                </button>
+
+                <button onclick="loadMatch('${m.id}')">
+                    ✏
+                </button>
+
+                <button onclick="deleteMatch('${m.id}')">
+                    🗑
+                </button>
+
+            </td>
+        `;
+
+        historyTable.appendChild(row);
+
+        /* ================= MOBILE CARD ================= */
+
+        const card =
+            document.createElement("div");
+
+        card.className =
+            `match-card ${rowClass}`;
+
+        card.innerHTML = `
+
+            <div class="match-card-header">
+
+                <div>
+                    📅 ${m.date || "-"}
+                </div>
+
+                <div>
+                    ${capitalize(m.format || "fours")}
+                </div>
+
+            </div>
+
+            <div class="match-score">
+
+                ${teamAName}
+                ${a}
+
+                -
+                
+                ${b}
+                ${teamBName}
+
+            </div>
+
+            <div class="match-meta">
+
+                <b>Winner:</b>
+                ${winner}
+
+                <br>
+
+                <b>Ends:</b>
+                ${m.ends.length}
+
+                <br>
+
+                <b>Notes:</b>
+                ${
+                    m.notes
+                    ? m.notes.substring(0, 60)
+                    : "None"
+                }
+
+            </div>
+
+            <div class="match-actions">
+
+                <button onclick="viewMatch('${m.id}')">
+                    View
+                </button>
+
+                <button onclick="loadMatch('${m.id}')">
+                    Edit
+                </button>
+
+                <button onclick="deleteMatch('${m.id}')">
+                    Delete
+                </button>
+
+            </div>
+        `;
+
+        mobileCards.appendChild(card);
+
+        rowsRendered++;
+    });
+
+    if (rowsRendered === 0) {
+
+        const row =
+            document.createElement("tr");
+
+        row.innerHTML = `
+            <td colspan="7" class="notice">
+                No matches match the current filters.
+            </td>
+        `;
+
+        historyTable.appendChild(row);
+
+        mobileCards.innerHTML = `
+            <div class="notice">
+                No matches match the current filters.
+            </div>
+        `;
+    }
+
+    stats.innerHTML = `
+        <b>Results</b><br>
+
+        Wins: ${wins} |
+        Losses: ${losses} |
+        Draws: ${draws}
+
+        <br><br>
+
+        <b>Shots</b><br>
+
+        Shots For: ${shotsFor} |
+        Shots Against: ${shotsAgainst} |
+        Difference: ${shotsFor - shotsAgainst}
+
+        <br><br>
+
+        <b>Total Matches:</b> ${rowsRendered}
+    `;
+}
+
+/* ================= VIEW MATCH ================= */
+
+function viewMatch(id) {
+
+    const m =
+        matches.find(
+            x => String(x.id) === String(id)
+        );
+
+    if (!m) return;
+
+    const a = total(m, "a");
+    const b = total(m, "b");
+
+    let winner = "Draw";
+
+    if (a > b)
+        winner = m.teamA.name;
+
+    else if (b > a)
+        winner = m.teamB.name;
+
+    function renderPlayers(team) {
+
+        let html = "";
+
+        Object.entries(team.players || {})
+        .forEach(([role, name]) => {
+
+            html += `
+                <li>
+                    <b>${capitalize(role)}</b>:
+                    ${name || "-"}
+                </li>
+            `;
+        });
+
+        return html;
+    }
+
+    let endsHTML = `
+        <div class="table-wrapper">
+
+        <table>
+
+        <thead>
+
+        <tr>
+            <th>End</th>
+            <th>${m.teamA.name}</th>
+            <th>${m.teamB.name}</th>
+        </tr>
+
+        </thead>
+
+        <tbody>
+    `;
+
+    m.ends.forEach((e,index)=>{
+
+        endsHTML += `
+            <tr>
+                <td>${index+1}</td>
+                <td>${e.a}</td>
+                <td>${e.b}</td>
+            </tr>
+        `;
+    });
+
+    endsHTML += `
+        </tbody>
+        </table>
+        </div>
+    `;
+
+    modalContent.innerHTML = `
+
+        <h2>
+            ${m.teamA.name}
+            vs
+            ${m.teamB.name}
+        </h2>
+
+        <p>
+            <b>Date:</b>
+            ${m.date}
+        </p>
+
+        <p>
+            <b>Format:</b>
+            ${capitalize(m.format)}
+        </p>
+
+        <p>
+            <b>Final Score:</b>
+            ${a} - ${b}
+        </p>
+
+        <p>
+            <b>Winner:</b>
+            ${winner}
+        </p>
+
+        <hr>
+
+        <h3>${m.teamA.name}</h3>
+
+        <ul>
+            ${renderPlayers(m.teamA)}
+        </ul>
+
+        <h3>${m.teamB.name}</h3>
+
+        <ul>
+            ${renderPlayers(m.teamB)}
+        </ul>
+
+        <hr>
+
+        <h3>End-by-End Scores</h3>
+
+        ${endsHTML}
+
+        <hr>
+
+        <h3>Match Notes</h3>
+
+        <p>
+            ${m.notes || "No notes added."}
+        </p>
+    `;
+
+    matchModal.style.display = "block";
+}
+
+/* ================= CLOSE MODAL ================= */
+
+function closeModal() {
+
+    matchModal.style.display = "none";
+}
+
+/* ================= CAPITALIZE ================= */
+
+function capitalize(text) {
+
+    return text.charAt(0).toUpperCase()
+        + text.slice(1);
+}
+
+/* ================= LOAD MATCH ================= */
+
+function loadMatch(id) {
+
+    const m =
+        matches.find(
+            x => String(x.id) === String(id)
+        );
+
+    if (!m) {
+
+        alert("Match not found.");
+
+        return;
+    }
+
+    editingId.value = m.id;
+
+    date.value = m.date || "";
+
+    teamA.value = m.teamA.name || "";
+    teamB.value = m.teamB.name || "";
+
+    teamFormat.value =
+        m.format || "fours";
+
+    updatePlayerFields();
+
+    Object.entries(m.teamA.players || {})
+    .forEach(([role,value])=>{
+
+        const input =
+            document.getElementById(
+                `a${role}`
+            );
+
+        if (input)
+            input.value = value;
+    });
+
+    Object.entries(m.teamB.players || {})
+    .forEach(([role,value])=>{
+
+        const input =
+            document.getElementById(
+                `b${role}`
+            );
+
+        if (input)
+            input.value = value;
+    });
+
+    notes.value = m.notes || "";
+
+    endsTable.tBodies[0].innerHTML = "";
+
+    m.ends.forEach(e=>{
+
+        addEnd(e.a, e.b);
+
+    });
+
+    window.scrollTo({
+
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+/* ================= DELETE MATCH ================= */
+
+function deleteMatch(id) {
+
+    if (
+        !confirm("Delete this match?")
+    ) {
+
+        return;
+    }
+
+    matches =
+        matches.filter(
+            m => String(m.id) !== String(id)
+        );
+
+    saveStorage();
+
+    render();
+}
+
+/* ================= CLEAR FORM ================= */
+
+function clearForm() {
+
+    editingId.value = "";
+
+    date.value = "";
+
+    teamA.value = "";
+    teamB.value = "";
+
+    notes.value = "";
+
+    teamFormat.value = "singles";
+
+    updatePlayerFields();
+
+    endsTable.tBodies[0].innerHTML = "";
+
+    addEnd();
+}
+
+/* ================= EXPORT JSON ================= */
+
+function exportJSON() {
+
+    const exportData = {
+
+        version: 1,
+
+        exported:
+            new Date().toISOString(),
+
+        matches
+    };
+
+    download(
+
+        JSON.stringify(
+            exportData,
+            null,
+            2
+        ),
+
+        "matches.json",
+
+        "application/json"
+    );
+}
+
+/* ================= EXPORT CSV ================= */
+
+function exportCSV() {
+
+    let csv =
+        "Date,Format,TeamA,ScoreA,TeamB,ScoreB,Winner\n";
+
+    matches.forEach(m => {
+
+        const a = total(m,"a");
+        const b = total(m,"b");
+
+        let winner = "Draw";
+
+        if (a > b)
+            winner = m.teamA.name;
+
+        else if (b > a)
+            winner = m.teamB.name;
+
+        csv +=
+            `"${m.date}","${m.format}","${m.teamA.name}",${a},"${m.teamB.name}",${b},"${winner}"\n`;
+
+    });
+
+    download(
+        csv,
+        "matches.csv",
+        "text/csv"
+    );
+}
+
+/* ================= IMPORT JSON ================= */
+
+function importJSON(event) {
+
+    const file =
+        event.target.files[0];
+
+    if (!file) return;
+
+    const reader =
+        new FileReader();
+
+    reader.onload = () => {
+
+        try {
+
+            const parsed =
+                JSON.parse(reader.result);
+
+            const imported =
+                parsed.matches || parsed;
+
+            if (
+                !Array.isArray(imported)
+            ) {
+
+                alert(
+                    "Invalid backup file."
+                );
+
+                return;
+            }
+
+            matches =
+                imported.filter(m =>
+
+                    m &&
+                    m.teamA &&
+                    m.teamB &&
+                    Array.isArray(m.ends)
+
+                );
+
+            saveStorage();
+
+            render();
+
+            alert(
+                `${matches.length} matches imported successfully.`
+            );
+
+        } catch (err) {
+
+            console.error(err);
+
+            alert(
+                "Could not import JSON file."
+            );
+        }
+    };
+
+    reader.readAsText(file);
+}
+
+/* ================= CLEAR ALL ================= */
+
+function clearAll() {
+
+    if (
+        !confirm(
+            "Delete ALL saved matches?"
+        )
+    ) return;
+
+    localStorage.removeItem("matches");
+
+    matches = [];
+
+    saveStorage();
+
+    render();
+
+    clearForm();
+}
+
+/* ================= DOWNLOAD ================= */
+
+function download(data, name, type) {
+
+    const blob =
+        new Blob([data], { type });
+
+    const a =
+        document.createElement("a");
+
+    a.href =
+        URL.createObjectURL(blob);
+
+    a.download = name;
+
+    a.click();
+
+    URL.revokeObjectURL(a.href);
+}
+
+/* ================= INITIALISE ================= */
+
+updatePlayerFields();
+
+clearForm();
+
+render();
+
+</script>
+
+</body>
+</html>

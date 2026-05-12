@@ -8,114 +8,449 @@
 
 <style>
 
-body {
-    font-family: Arial, sans-serif;
-    background: #f4f4f4;
-    margin: 20px;
+/* ================= ROOT VARIABLES ================= */
+
+:root {
+
+    --bg: #f4f4f4;
+    --card: #ffffff;
+    --text: #222;
+    --border: #cccccc;
+    --primary: #2f7d32;
+    --primary-hover: #256428;
+    --table-head: #e0e0e0;
+    --shadow: rgba(0,0,0,0.08);
+
 }
 
-h1,h2,h3 {
-    margin-bottom: 5px;
+/* ================= THEMES ================= */
+
+/* ---------- DARK ---------- */
+
+body.dark-theme {
+
+    --bg: #121212;
+    --card: #1e1e1e;
+    --text: #f0f0f0;
+    --border: #444;
+    --primary: #4caf50;
+    --primary-hover: #43a047;
+    --table-head: #2b2b2b;
+    --shadow: rgba(0,0,0,0.5);
+}
+
+/* ---------- LIGHT ---------- */
+
+body.light-theme {
+
+    --bg: #f4f4f4;
+    --card: #ffffff;
+    --text: #222;
+    --border: #cccccc;
+    --primary: #2f7d32;
+    --primary-hover: #256428;
+    --table-head: #e0e0e0;
+}
+
+/* ---------- PAPER ---------- */
+
+body.paper-theme {
+
+    --bg: #f7f1e3;
+    --card: #fffdf7;
+    --text: #4b3f2f;
+    --border: #d8cbb8;
+    --primary: #8b5e34;
+    --primary-hover: #6f4724;
+    --table-head: #ede2d0;
+
+    font-family: "Georgia", serif;
+
+    background-image:
+        repeating-linear-gradient(
+            0deg,
+            rgba(0,0,0,0.02),
+            rgba(0,0,0,0.02) 1px,
+            transparent 1px,
+            transparent 32px
+        );
+}
+
+/* ---------- FUTURISTIC ---------- */
+
+body.future-theme {
+
+    --bg: #050816;
+    --card: #111827;
+    --text: #d7f9ff;
+    --border: #00e5ff;
+    --primary: #00e5ff;
+    --primary-hover: #00bcd4;
+    --table-head: #09111f;
+
+    background:
+        radial-gradient(circle at top, #0f172a, #020617);
+
+    font-family: "Trebuchet MS", sans-serif;
+}
+
+/* ================= GLOBAL ================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+
+    font-family: Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+
+    margin: 0;
+    padding: 20px;
+
+    transition:
+        background 0.3s ease,
+        color 0.3s ease;
+}
+
+h1, h2, h3 {
+
+    margin-top: 0;
+    color: var(--text);
 }
 
 .card {
-    background: #fff;
-    padding: 15px;
+
+    background: var(--card);
+
+    padding: 20px;
     margin-bottom: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+
+    border-radius: 14px;
+
+    border: 1px solid var(--border);
+
+    box-shadow:
+        0 4px 12px var(--shadow);
+
+    transition: 0.3s;
 }
+
+/* ================= FORM ELEMENTS ================= */
 
 label {
-    display: block;
-    margin-top: 8px;
+
+    display: flex;
+    flex-direction: column;
+
+    margin-top: 12px;
+    gap: 6px;
 }
 
-input, textarea, select {
-    padding: 6px;
-    width: 250px;
+input,
+textarea,
+select {
+
+    width: 100%;
+
+    padding: 10px;
+
+    border-radius: 8px;
+
+    border: 1px solid var(--border);
+
+    background: var(--card);
+
+    color: var(--text);
+
+    font-size: 14px;
 }
+
+/* ================= BUTTONS ================= */
 
 button {
+
     margin-top: 10px;
-    padding: 6px 12px;
+
+    padding: 10px 16px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: var(--primary);
+
+    color: white;
+
+    font-weight: bold;
+
     cursor: pointer;
+
+    transition: 0.2s;
+}
+
+button:hover {
+
+    background: var(--primary-hover);
+
+    transform: translateY(-1px);
+}
+
+.actions button {
+
+    margin: 2px;
+}
+
+/* ================= TABLES ================= */
+
+.table-wrapper {
+
+    overflow-x: auto;
 }
 
 table {
+
     width: 100%;
-    margin-top: 10px;
+
     border-collapse: collapse;
+
+    margin-top: 10px;
+
+    min-width: 600px;
 }
 
-th, td {
-    border: 1px solid #ccc;
-    padding: 6px;
+th,
+td {
+
+    border: 1px solid var(--border);
+
+    padding: 10px;
+
     text-align: center;
 }
 
 th {
-    background: #e0e0e0;
+
+    background: var(--table-head);
 }
 
 .small {
-    width: 70px;
+
+    width: 80px;
 }
 
 .notice {
+
     text-align: center;
+
     font-style: italic;
-    color: #555;
+
+    opacity: 0.8;
 }
 
-.actions button {
-    margin: 2px;
-}
+/* ================= RESULT COLOURS ================= */
 
 .win {
-    background: #d4edda;
+
+    background: rgba(76, 175, 80, 0.2);
 }
 
 .loss {
-    background: #f8d7da;
+
+    background: rgba(244, 67, 54, 0.2);
 }
 
 .draw {
-    background: #fff3cd;
+
+    background: rgba(255, 193, 7, 0.2);
 }
 
+/* ================= MODAL ================= */
+
 #matchModal {
+
     display: none;
+
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.6);
-    overflow: auto;
+
+    inset: 0;
+
+    background: rgba(0,0,0,0.75);
+
+    overflow-y: auto;
+
     z-index: 1000;
+
+    padding: 20px;
 }
 
 .modal-box {
-    background: white;
-    width: 90%;
-    max-width: 900px;
-    margin: 40px auto;
+
+    background: var(--card);
+
+    color: var(--text);
+
+    width: 100%;
+    max-width: 950px;
+
+    margin: auto;
+
     padding: 20px;
-    border-radius: 10px;
+
+    border-radius: 16px;
+
     position: relative;
+
+    border: 1px solid var(--border);
 }
 
 .close-btn {
+
     position: absolute;
+
+    top: 12px;
+    right: 12px;
+}
+
+/* ================= THEME SELECTOR ================= */
+
+.theme-switcher {
+
+    position: sticky;
+
     top: 10px;
-    right: 10px;
+
+    z-index: 999;
+
+    display: flex;
+    justify-content: flex-end;
+
+    margin-bottom: 15px;
+}
+
+.theme-switcher select {
+
+    width: 220px;
+}
+
+/* ================= FUTURE THEME SPECIAL FX ================= */
+
+body.future-theme .card {
+
+    box-shadow:
+        0 0 15px rgba(0,229,255,0.15);
+
+    border: 1px solid rgba(0,229,255,0.4);
+}
+
+body.future-theme button {
+
+    box-shadow:
+        0 0 10px rgba(0,229,255,0.4);
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 768px) {
+
+    body {
+
+        padding: 10px;
+    }
+
+    .card {
+
+        padding: 15px;
+    }
+
+    h1 {
+
+        font-size: 1.8rem;
+    }
+
+    h2 {
+
+        font-size: 1.3rem;
+    }
+
+    button {
+
+        width: 100%;
+    }
+
+    .actions {
+
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .small {
+
+        width: 65px;
+    }
+
+    table {
+
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    h1 {
+
+        font-size: 1.5rem;
+    }
+
+    table {
+
+        font-size: 12px;
+    }
+
+    th,
+    td {
+
+        padding: 6px;
+    }
+
+    input,
+    textarea,
+    select {
+
+        font-size: 16px;
+    }
 }
 
 </style>
 </head>
 
 <body>
+
+<div class="theme-switcher">
+
+    <select id="themeSelector" onchange="changeTheme(this.value)">
+
+        <option value="light-theme">
+            Light Theme
+        </option>
+
+        <option value="dark-theme">
+            Dark Theme
+        </option>
+
+        <option value="paper-theme">
+            Paper Theme
+        </option>
+
+        <option value="future-theme">
+            Futuristic Theme
+        </option>
+
+    </select>
+
+</div>
 
 <h1>🏏 Lawn Bowls – Advanced Scorecard</h1>
 
@@ -185,6 +520,7 @@ Team Name
 <!-- ================= ENDS ================= -->
 
 <h3>Ends</h3>
+<div class="table-wrapper">
 
 <table id="endsTable">
 
@@ -200,6 +536,7 @@ Team Name
 <tbody></tbody>
 
 </table>
+</div>
 
 <button onclick="addEnd()">Add End</button>
 
@@ -242,6 +579,7 @@ To Date
 <div class="card">
 
 <h2>Match History</h2>
+<div class="table-wrapper">
 
 <table>
 
@@ -260,6 +598,7 @@ To Date
 <tbody id="matchHistory"></tbody>
 
 </table>
+</div>
 
 </div>
 
@@ -1129,8 +1468,38 @@ function download(data, name, type) {
     URL.revokeObjectURL(a.href);
 }
 
-/* ================= INITIALISE ================= */
 
+/* ================= THEMES ================= */
+
+function changeTheme(theme) {
+
+    document.body.className = theme;
+
+    localStorage.setItem(
+        "selectedTheme",
+        theme
+    );
+}
+
+function loadTheme() {
+
+    const savedTheme =
+        localStorage.getItem("selectedTheme")
+        || "light-theme";
+
+    document.body.className = savedTheme;
+
+    document.getElementById(
+        "themeSelector"
+    ).value = savedTheme;
+}
+
+
+    
+
+/* ================= INITIALISE ================= */
+loadTheme();
+    
 updatePlayerFields();
 
 clearForm();

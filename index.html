@@ -488,7 +488,6 @@ function render() {
             !m.teamB ||
             !Array.isArray(m.ends)
         ) {
-
             return;
         }
 
@@ -498,75 +497,66 @@ function render() {
         const teamBName =
             m.teamB.name || "Unknown";
 
+        // Filters
+
         if (
             teamFilter &&
             !teamAName.toLowerCase().includes(teamFilter) &&
             !teamBName.toLowerCase().includes(teamFilter)
-        ) return;
+        ) {
+            return;
+        }
 
-        if (
-            fromDate.value &&
-            m.date < fromDate.value
-        ) return;
+        if ( fromDate.value && new Date(m.date) < new Date(fromDate.value)) {
+            return;
+        }
 
-        if (
-            toDate.value &&
-            m.date > toDate.value
-        ) return;
+        if (toDate.value && new Date(m.date) > new Date(toDate.value)) {
+            return;
+        }
 
         const a = total(m, "a");
-
         const b = total(m, "b");
 
         shotsFor += a;
-
         shotsAgainst += b;
 
         let winner = "Draw";
-
         let rowClass = "draw";
 
         if (a > b) {
 
             winner = teamAName;
-
             wins++;
-
             rowClass = "win";
 
         }
-
         else if (b > a) {
 
             winner = teamBName;
-
             losses++;
-
             rowClass = "loss";
 
         }
-
         else {
 
             draws++;
 
         }
 
-        historyTable.innerHTML += `
-        <tr class="${rowClass}">
+        // CREATE ROW SAFELY
 
+        const row = document.createElement("tr");
+
+        row.className = rowClass;
+
+        row.innerHTML = `
             <td>${m.date || "-"}</td>
-
             <td>${teamAName}</td>
-
             <td>${a}</td>
-
             <td>${teamBName}</td>
-
             <td>${b}</td>
-
             <td>${winner}</td>
-
             <td class="actions">
 
                 <button onclick="loadMatch('${m.id}')">
@@ -578,23 +568,29 @@ function render() {
                 </button>
 
             </td>
-
-        </tr>
         `;
+
+        historyTable.appendChild(row);
 
         rowsRendered++;
     });
 
+    // EMPTY MESSAGE
+
     if (rowsRendered === 0) {
 
-        historyTable.innerHTML = `
-        <tr>
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
             <td colspan="7" class="notice">
                 No matches match the current filters.
             </td>
-        </tr>
         `;
+
+        historyTable.appendChild(row);
     }
+
+    // STATS
 
     stats.innerHTML = `
         <b>Results</b><br>
@@ -613,7 +609,7 @@ function render() {
 
         <br><br>
 
-        <b>Total Matches:</b> ${matches.length}
+        <b>Total Matches:</b> ${rowsRendered}
     `;
 }
 

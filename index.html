@@ -261,6 +261,88 @@ th {
     background: var(--draw);
 }
 
+/* ================= MOBILE MATCH CARDS ================= */
+
+.mobile-history {
+
+    display: none;
+}
+
+.match-card {
+
+    background: var(--card);
+
+    border: 1px solid var(--border);
+
+    border-radius: 14px;
+
+    padding: 14px;
+
+    margin-bottom: 12px;
+
+    box-shadow:
+        0 2px 6px var(--shadow);
+}
+
+.match-card-header {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 10px;
+
+    font-size: 0.9rem;
+
+    opacity: 0.85;
+}
+
+.match-score {
+
+    font-size: 1.2rem;
+    font-weight: bold;
+
+    margin: 10px 0;
+}
+
+.match-meta {
+
+    margin-top: 8px;
+
+    font-size: 0.92rem;
+
+    line-height: 1.5;
+}
+
+.match-actions {
+
+    display: flex;
+
+    gap: 8px;
+
+    margin-top: 12px;
+}
+
+.match-actions button {
+
+    flex: 1;
+}
+
+@media (max-width: 768px) {
+
+    .desktop-history {
+
+        display: none;
+    }
+
+    .mobile-history {
+
+        display: block;
+    }
+}
+
 /* ================= MODAL ================= */
 
 #matchModal {
@@ -522,11 +604,15 @@ To Date
 
 </div>
 
-<!-- ================= HISTORY ================= -->
+<!-- ================= MATCH HISTORY ================= -->
 
 <div class="card">
 
 <h2>Match History</h2>
+
+<!-- ================= DESKTOP TABLE ================= -->
+
+<div class="desktop-history">
 
 <div class="table-wrapper">
 
@@ -552,6 +638,14 @@ To Date
 
 </div>
 
+<!-- ================= MOBILE CARDS ================= -->
+
+<div
+    id="mobileMatchCards"
+    class="mobile-history"
+></div>
+
+</div>
 <!-- ================= STATS ================= -->
 
 <div class="card">
@@ -959,9 +1053,18 @@ function saveMatch() {
 
 /* ================= RENDER ================= */
 
+/* ================= RENDER ================= */
+
 function render() {
 
     historyTable.innerHTML = "";
+
+    const mobileCards =
+        document.getElementById(
+            "mobileMatchCards"
+        );
+
+    mobileCards.innerHTML = "";
 
     let rowsRendered = 0;
 
@@ -1003,6 +1106,22 @@ function render() {
             return;
         }
 
+        if (
+            fromDate.value &&
+            new Date(m.date)
+            < new Date(fromDate.value)
+        ) {
+            return;
+        }
+
+        if (
+            toDate.value &&
+            new Date(m.date)
+            > new Date(toDate.value)
+        ) {
+            return;
+        }
+
         const a = total(m, "a");
         const b = total(m, "b");
 
@@ -1031,6 +1150,8 @@ function render() {
             draws++;
         }
 
+        /* ================= DESKTOP TABLE ================= */
+
         const row =
             document.createElement("tr");
 
@@ -1038,10 +1159,15 @@ function render() {
 
         row.innerHTML = `
             <td>${m.date || "-"}</td>
+
             <td>${teamAName}</td>
+
             <td>${a}</td>
+
             <td>${teamBName}</td>
+
             <td>${b}</td>
+
             <td>${winner}</td>
 
             <td class="actions">
@@ -1063,6 +1189,80 @@ function render() {
 
         historyTable.appendChild(row);
 
+        /* ================= MOBILE CARD ================= */
+
+        const card =
+            document.createElement("div");
+
+        card.className =
+            `match-card ${rowClass}`;
+
+        card.innerHTML = `
+
+            <div class="match-card-header">
+
+                <div>
+                    📅 ${m.date || "-"}
+                </div>
+
+                <div>
+                    ${capitalize(m.format || "fours")}
+                </div>
+
+            </div>
+
+            <div class="match-score">
+
+                ${teamAName}
+                ${a}
+
+                -
+                
+                ${b}
+                ${teamBName}
+
+            </div>
+
+            <div class="match-meta">
+
+                <b>Winner:</b>
+                ${winner}
+
+                <br>
+
+                <b>Ends:</b>
+                ${m.ends.length}
+
+                <br>
+
+                <b>Notes:</b>
+                ${
+                    m.notes
+                    ? m.notes.substring(0, 60)
+                    : "None"
+                }
+
+            </div>
+
+            <div class="match-actions">
+
+                <button onclick="viewMatch('${m.id}')">
+                    View
+                </button>
+
+                <button onclick="loadMatch('${m.id}')">
+                    Edit
+                </button>
+
+                <button onclick="deleteMatch('${m.id}')">
+                    Delete
+                </button>
+
+            </div>
+        `;
+
+        mobileCards.appendChild(card);
+
         rowsRendered++;
     });
 
@@ -1078,6 +1278,12 @@ function render() {
         `;
 
         historyTable.appendChild(row);
+
+        mobileCards.innerHTML = `
+            <div class="notice">
+                No matches match the current filters.
+            </div>
+        `;
     }
 
     stats.innerHTML = `
@@ -1093,13 +1299,11 @@ function render() {
 
         Shots For: ${shotsFor} |
         Shots Against: ${shotsAgainst} |
-        Difference:
-        ${shotsFor - shotsAgainst}
+        Difference: ${shotsFor - shotsAgainst}
 
         <br><br>
 
-        <b>Total Matches:</b>
-        ${rowsRendered}
+        <b>Total Matches:</b> ${rowsRendered}
     `;
 }
 

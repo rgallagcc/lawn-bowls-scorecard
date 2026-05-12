@@ -1,8 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
 <title>Lawn Bowls – Advanced Scorecard</title>
 
@@ -15,17 +21,30 @@
     --bg: #f4f4f4;
     --card: #ffffff;
     --text: #222;
-    --border: #cccccc;
+    --border: #d0d0d0;
+
     --primary: #2f7d32;
     --primary-hover: #256428;
-    --table-head: #e0e0e0;
-    --shadow: rgba(0,0,0,0.08);
 
+    --table-head: #e8e8e8;
+
+    --shadow: rgba(0,0,0,0.08);
 }
 
 /* ================= THEMES ================= */
 
-/* ---------- DARK ---------- */
+body.light-theme {
+
+    --bg: #f4f4f4;
+    --card: #ffffff;
+    --text: #222;
+    --border: #d0d0d0;
+
+    --primary: #2f7d32;
+    --primary-hover: #256428;
+
+    --table-head: #e8e8e8;
+}
 
 body.dark-theme {
 
@@ -33,26 +52,12 @@ body.dark-theme {
     --card: #1e1e1e;
     --text: #f0f0f0;
     --border: #444;
+
     --primary: #4caf50;
     --primary-hover: #43a047;
+
     --table-head: #2b2b2b;
-    --shadow: rgba(0,0,0,0.5);
 }
-
-/* ---------- LIGHT ---------- */
-
-body.light-theme {
-
-    --bg: #f4f4f4;
-    --card: #ffffff;
-    --text: #222;
-    --border: #cccccc;
-    --primary: #2f7d32;
-    --primary-hover: #256428;
-    --table-head: #e0e0e0;
-}
-
-/* ---------- PAPER ---------- */
 
 body.paper-theme {
 
@@ -60,23 +65,14 @@ body.paper-theme {
     --card: #fffdf7;
     --text: #4b3f2f;
     --border: #d8cbb8;
+
     --primary: #8b5e34;
     --primary-hover: #6f4724;
+
     --table-head: #ede2d0;
 
-    font-family: "Georgia", serif;
-
-    background-image:
-        repeating-linear-gradient(
-            0deg,
-            rgba(0,0,0,0.02),
-            rgba(0,0,0,0.02) 1px,
-            transparent 1px,
-            transparent 32px
-        );
+    font-family: Georgia, serif;
 }
-
-/* ---------- FUTURISTIC ---------- */
 
 body.future-theme {
 
@@ -84,14 +80,14 @@ body.future-theme {
     --card: #111827;
     --text: #d7f9ff;
     --border: #00e5ff;
+
     --primary: #00e5ff;
     --primary-hover: #00bcd4;
+
     --table-head: #09111f;
 
     background:
         radial-gradient(circle at top, #0f172a, #020617);
-
-    font-family: "Trebuchet MS", sans-serif;
 }
 
 /* ================= GLOBAL ================= */
@@ -102,50 +98,59 @@ body.future-theme {
 
 body {
 
-    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 12px;
+
     background: var(--bg);
     color: var(--text);
 
-    margin: 0;
-    padding: 20px;
+    font-family: Arial, sans-serif;
 
-    transition:
-        background 0.3s ease,
-        color 0.3s ease;
+    transition: 0.3s;
 }
 
 h1, h2, h3 {
 
     margin-top: 0;
-    color: var(--text);
 }
+
+/* ================= THEME SWITCHER ================= */
+
+.theme-switcher {
+
+    margin-bottom: 15px;
+}
+
+.theme-switcher select {
+
+    width: 100%;
+}
+
+/* ================= CARDS ================= */
 
 .card {
 
     background: var(--card);
 
-    padding: 20px;
-    margin-bottom: 20px;
-
-    border-radius: 14px;
-
     border: 1px solid var(--border);
 
-    box-shadow:
-        0 4px 12px var(--shadow);
+    border-radius: 16px;
 
-    transition: 0.3s;
+    padding: 15px;
+
+    margin-bottom: 15px;
+
+    box-shadow:
+        0 4px 10px var(--shadow);
 }
 
-/* ================= FORM ELEMENTS ================= */
+/* ================= FORMS ================= */
 
 label {
 
-    display: flex;
-    flex-direction: column;
+    display: block;
 
-    margin-top: 12px;
-    gap: 6px;
+    margin-top: 10px;
 }
 
 input,
@@ -154,9 +159,11 @@ select {
 
     width: 100%;
 
-    padding: 10px;
+    padding: 12px;
 
-    border-radius: 8px;
+    margin-top: 5px;
+
+    border-radius: 10px;
 
     border: 1px solid var(--border);
 
@@ -164,50 +171,39 @@ select {
 
     color: var(--text);
 
-    font-size: 14px;
+    font-size: 16px;
 }
 
 /* ================= BUTTONS ================= */
 
 button {
 
-    margin-top: 10px;
+    width: 100%;
 
-    padding: 10px 16px;
+    padding: 12px;
+
+    margin-top: 10px;
 
     border: none;
 
-    border-radius: 8px;
+    border-radius: 10px;
 
     background: var(--primary);
 
     color: white;
 
+    font-size: 15px;
     font-weight: bold;
 
     cursor: pointer;
-
-    transition: 0.2s;
 }
 
 button:hover {
 
     background: var(--primary-hover);
-
-    transform: translateY(-1px);
-}
-
-.actions button {
-
-    margin: 2px;
 }
 
 /* ================= TABLES ================= */
-
-.table-wrapper {
-
-    overflow-x: auto;
-}
 
 table {
 
@@ -216,8 +212,6 @@ table {
     border-collapse: collapse;
 
     margin-top: 10px;
-
-    min-width: 600px;
 }
 
 th,
@@ -225,7 +219,7 @@ td {
 
     border: 1px solid var(--border);
 
-    padding: 10px;
+    padding: 8px;
 
     text-align: center;
 }
@@ -235,35 +229,107 @@ th {
     background: var(--table-head);
 }
 
-.small {
+/* ================= MOBILE TABLES ================= */
 
-    width: 80px;
+@media (max-width: 768px) {
+
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+
+        display: block;
+    }
+
+    thead {
+
+        display: none;
+    }
+
+    tr {
+
+        margin-bottom: 15px;
+
+        border: 1px solid var(--border);
+
+        border-radius: 12px;
+
+        overflow: hidden;
+
+        background: var(--card);
+    }
+
+    td {
+
+        display: flex;
+
+        justify-content: space-between;
+
+        align-items: center;
+
+        text-align: right;
+
+        padding: 12px;
+
+        border: none;
+
+        border-bottom: 1px solid var(--border);
+
+        gap: 10px;
+    }
+
+    td:last-child {
+
+        border-bottom: none;
+    }
+
+    td::before {
+
+        content: attr(data-label);
+
+        font-weight: bold;
+
+        text-align: left;
+    }
+
+    .actions {
+
+        display: flex;
+
+        flex-wrap: wrap;
+
+        gap: 5px;
+
+        justify-content: flex-end;
+    }
+
+    .actions button {
+
+        width: auto;
+
+        margin: 0;
+
+        padding: 8px 10px;
+    }
 }
 
-.notice {
-
-    text-align: center;
-
-    font-style: italic;
-
-    opacity: 0.8;
-}
-
-/* ================= RESULT COLOURS ================= */
+/* ================= RESULTS ================= */
 
 .win {
 
-    background: rgba(76, 175, 80, 0.2);
+    background: rgba(76,175,80,0.15);
 }
 
 .loss {
 
-    background: rgba(244, 67, 54, 0.2);
+    background: rgba(244,67,54,0.15);
 }
 
 .draw {
 
-    background: rgba(255, 193, 7, 0.2);
+    background: rgba(255,193,7,0.15);
 }
 
 /* ================= MODAL ================= */
@@ -276,13 +342,13 @@ th {
 
     inset: 0;
 
-    background: rgba(0,0,0,0.75);
+    background: rgba(0,0,0,0.7);
 
     overflow-y: auto;
 
-    z-index: 1000;
+    padding: 10px;
 
-    padding: 20px;
+    z-index: 999;
 }
 
 .modal-box {
@@ -291,287 +357,139 @@ th {
 
     color: var(--text);
 
-    width: 100%;
-    max-width: 950px;
-
-    margin: auto;
-
-    padding: 20px;
-
     border-radius: 16px;
 
-    position: relative;
+    padding: 15px;
 
-    border: 1px solid var(--border);
+    width: 100%;
+    max-width: 900px;
+
+    margin: 20px auto;
+
+    position: relative;
 }
 
 .close-btn {
 
     position: absolute;
 
-    top: 12px;
-    right: 12px;
-}
-
-/* ================= THEME SELECTOR ================= */
-
-.theme-switcher {
-
-    position: sticky;
-
     top: 10px;
+    right: 10px;
 
-    z-index: 999;
-
-    display: flex;
-    justify-content: flex-end;
-
-    margin-bottom: 15px;
+    width: auto;
 }
 
-.theme-switcher select {
+/* ================= DESKTOP ================= */
 
-    width: 220px;
-}
-
-/* ================= FUTURE THEME SPECIAL FX ================= */
-
-body.future-theme .card {
-
-    box-shadow:
-        0 0 15px rgba(0,229,255,0.15);
-
-    border: 1px solid rgba(0,229,255,0.4);
-}
-
-body.future-theme button {
-
-    box-shadow:
-        0 0 10px rgba(0,229,255,0.4);
-}
-
-/* ================= RESPONSIVE ================= */
-
-@media (max-width: 768px) {
-
-    body {
-
-        padding: 10px;
-    }
-
-    .card {
-
-        padding: 15px;
-    }
-
-    h1 {
-
-        font-size: 1.8rem;
-    }
-
-    h2 {
-
-        font-size: 1.3rem;
-    }
+@media (min-width: 769px) {
 
     button {
 
-        width: 100%;
-    }
-
-    .actions {
-
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    .small {
-
-        width: 65px;
-    }
-
-    table {
-
-        font-size: 14px;
-    }
-}
-
-@media (max-width: 480px) {
-
-    h1 {
-
-        font-size: 1.5rem;
-    }
-
-    table {
-
-        font-size: 12px;
-    }
-
-    th,
-    td {
-
-        padding: 6px;
+        width: auto;
     }
 
     input,
     textarea,
     select {
 
-        font-size: 16px;
+        max-width: 450px;
+    }
+
+    .theme-switcher select {
+
+        width: 250px;
     }
 }
 
 </style>
+
 </head>
 
-<body>
+<body class="light-theme">
+
+<!-- ================= THEME ================= -->
 
 <div class="theme-switcher">
 
-    <select id="themeSelector" onchange="changeTheme(this.value)">
+<select
+    id="themeSelector"
+    onchange="changeTheme(this.value)"
+>
 
-        <option value="light-theme">
-            Light Theme
-        </option>
+<option value="light-theme">
+Light Theme
+</option>
 
-        <option value="dark-theme">
-            Dark Theme
-        </option>
+<option value="dark-theme">
+Dark Theme
+</option>
 
-        <option value="paper-theme">
-            Paper Theme
-        </option>
+<option value="paper-theme">
+Paper Theme
+</option>
 
-        <option value="future-theme">
-            Futuristic Theme
-        </option>
+<option value="future-theme">
+Futuristic Theme
+</option>
 
-    </select>
+</select>
 
 </div>
 
 <h1>🏏 Lawn Bowls – Advanced Scorecard</h1>
 
-<!-- ================= ADD / EDIT MATCH ================= -->
+<!-- ================= MATCH FORM ================= -->
 
 <div class="card">
 
-<h2>Add / Edit Match</h2>
-
-<input type="hidden" id="editingId">
+<h2>Add Match</h2>
 
 <label>
-<h3>Date</h3>
+Date
 <input type="date" id="date">
 </label>
 
-<!-- ================= TEAM FORMAT ================= -->
-
-<h3>Team Format / Size</h3>
-
 <label>
-
-<select id="teamFormat" onchange="updatePlayerFields()">
-
-    <option value="singles">
-        Singles (1 Player)
-    </option>
-
-    <option value="pairs">
-        Pairs (2 Players)
-    </option>
-
-    <option value="triples">
-        Triples (3 Players)
-    </option>
-
-    <option value="fours" selected>
-        Fours / Rinks (4 Players)
-    </option>
-
-</select>
-
-</label>
-
-<!-- ================= TEAM A ================= -->
-<br>
-<h3>Team A</h3>
-
-<label>
-Team Name
+Team A
 <input id="teamA">
 </label>
 
-<div id="teamAPlayers"></div>
-
-<!-- ================= TEAM B ================= -->
-<br>
-<h3>Team B</h3>
-
 <label>
-Team Name
+Team B
 <input id="teamB">
 </label>
 
-<div id="teamBPlayers"></div>
-
-<!-- ================= ENDS ================= -->
-<br>
-
 <h3>Ends</h3>
-<div class="table-wrapper">
 
 <table id="endsTable">
 
 <thead>
+
 <tr>
 <th>End</th>
 <th>Team A</th>
 <th>Team B</th>
 <th>Remove</th>
 </tr>
+
 </thead>
 
 <tbody></tbody>
 
 </table>
-</div>
 
-<button onclick="addEnd()">Add End</button>
-
-<label>
-Match Notes
-<textarea id="notes" rows="3"></textarea>
-</label>
-
-<br>
-
-<button onclick="saveMatch()">Save Match</button>
-
-</div>
-
-<!-- ================= FILTERS ================= -->
-
-<div class="card">
-
-<h2>Filters</h2>
+<button onclick="addEnd()">
+Add End
+</button>
 
 <label>
-Filter by Team
-<input id="filterTeam" oninput="render()">
+Notes
+<textarea id="notes"></textarea>
 </label>
 
-<label>
-From Date
-<input type="date" id="fromDate" onchange="render()">
-</label>
-
-<label>
-To Date
-<input type="date" id="toDate" onchange="render()">
-</label>
+<button onclick="saveMatch()">
+Save Match
+</button>
 
 </div>
 
@@ -580,11 +498,11 @@ To Date
 <div class="card">
 
 <h2>Match History</h2>
-<div class="table-wrapper">
 
 <table>
 
 <thead>
+
 <tr>
 <th>Date</th>
 <th>Team A</th>
@@ -594,883 +512,37 @@ To Date
 <th>Winner</th>
 <th>Actions</th>
 </tr>
+
 </thead>
 
 <tbody id="matchHistory"></tbody>
 
 </table>
-</div>
 
 </div>
 
-<!-- ================= STATS ================= -->
-
-<div class="card">
-
-<h2>Statistics</h2>
-
-<div id="stats"></div>
-
-</div>
-
-<!-- ================= IMPORT / EXPORT ================= -->
-
-<div class="card">
-
-<h2>Import / Export</h2>
-
-<button onclick="exportJSON()">Export JSON</button>
-
-<button onclick="exportCSV()">Export CSV</button>
-
-<input type="file" accept=".json" onchange="importJSON(event)">
-
-<button onclick="clearAll()">Clear All</button>
-
-<p id="lastSaved"></p>
-
-</div>
-
-<!-- ================= MATCH DETAILS MODAL ================= -->
+<!-- ================= MODAL ================= -->
 
 <div id="matchModal">
 
-    <div class="modal-box">
+<div class="modal-box">
 
-        <button
-            class="close-btn"
-            onclick="closeModal()"
-        >
-            ✖
-        </button>
+<button
+    class="close-btn"
+    onclick="closeModal()"
+>
+✖
+</button>
 
-        <div id="modalContent"></div>
+<div id="modalContent"></div>
 
-    </div>
+</div>
 
 </div>
 
 <script>
 
-/* ================= ELEMENT REFERENCES ================= */
-
-const historyTable =
-    document.getElementById("matchHistory");
-
-/* ================= STORAGE ================= */
-
-let matches = [];
-
-loadStorage();
-
-/* ================= LOAD STORAGE ================= */
-
-function loadStorage() {
-
-    try {
-
-        const saved =
-            JSON.parse(localStorage.getItem("matches"));
-
-        if (Array.isArray(saved)) {
-
-            matches = saved;
-
-        }
-
-    }
-
-    catch (err) {
-
-        console.error("Storage load failed", err);
-
-        matches = [];
-    }
-}
-
-/* ================= SAVE STORAGE ================= */
-
-function saveStorage() {
-
-    localStorage.setItem(
-        "matches",
-        JSON.stringify(matches)
-    );
-
-    lastSaved.innerHTML =
-        "Last saved: " +
-        new Date().toLocaleString();
-}
-
-/* ================= TEAM FORMAT ================= */
-
-function updatePlayerFields() {
-
-    const format = teamFormat.value;
-
-    let roles = [];
-
-    switch (format) {
-
-        case "singles":
-            roles = ["Single"];
-            break;
-
-        case "pairs":
-            roles = ["Lead", "Skip"];
-            break;
-
-        case "triples":
-            roles = ["Lead", "Second", "Skip"];
-            break;
-
-        case "fours":
-        default:
-            roles = ["Lead", "Second", "Third", "Skip"];
-            break;
-    }
-
-    renderPlayerInputs("teamAPlayers", "a", roles);
-
-    renderPlayerInputs("teamBPlayers", "b", roles);
-}
-
-function renderPlayerInputs(containerId, prefix, roles) {
-
-    const container =
-        document.getElementById(containerId);
-
-    container.innerHTML = "";
-
-    roles.forEach(role => {
-
-        const safeRole =
-            role.toLowerCase();
-
-        container.innerHTML += `
-            <label>
-                ${role}
-                <input id="${prefix}${safeRole}">
-            </label>
-        `;
-    });
-}
-
-function getPlayers(prefix) {
-
-    const inputs =
-        document.querySelectorAll(
-            `#team${prefix.toUpperCase()}Players input`
-        );
-
-    const players = {};
-
-    inputs.forEach(input => {
-
-        players[input.id.replace(prefix, "")] =
-            input.value.trim();
-
-    });
-
-    return players;
-}
-
-/* ================= END MANAGEMENT ================= */
-
-function addEnd(a = 0, b = 0) {
-
-    const tbody = endsTable.tBodies[0];
-
-    const row = document.createElement("tr");
-
-    row.innerHTML = `
-        <td>${tbody.rows.length + 1}</td>
-
-        <td>
-            <input class="small" type="number" min="0" value="${a}">
-        </td>
-
-        <td>
-            <input class="small" type="number" min="0" value="${b}">
-        </td>
-
-        <td>
-            <button onclick="removeEnd(this)">❌</button>
-        </td>
-    `;
-
-    tbody.appendChild(row);
-}
-
-function removeEnd(button) {
-
-    button.closest("tr").remove();
-
-    renumberEnds();
-}
-
-function renumberEnds() {
-
-    [...endsTable.tBodies[0].rows].forEach((row, index) => {
-
-        row.cells[0].innerText = index + 1;
-
-    });
-}
-
-/* ================= TOTALS ================= */
-
-function total(match, side) {
-
-    if (!match.ends || !Array.isArray(match.ends)) {
-
-        return 0;
-    }
-
-    return match.ends.reduce((sum, end) => {
-
-        const value =
-            side === "a"
-            ? Number(end.a || 0)
-            : Number(end.b || 0);
-
-        return sum + value;
-
-    }, 0);
-}
-
-/* ================= SAVE MATCH ================= */
-
-function saveMatch() {
-
-    if (
-        !date.value ||
-        !teamA.value.trim() ||
-        !teamB.value.trim()
-    ) {
-
-        alert("Please enter a date and both team names.");
-
-        return;
-    }
-
-    const ends =
-        [...endsTable.tBodies[0].rows].map(r => ({
-
-            a: Number(
-                r.cells[1].firstElementChild.value || 0
-            ),
-
-            b: Number(
-                r.cells[2].firstElementChild.value || 0
-            )
-
-        }));
-
-    if (ends.length === 0) {
-
-        alert("Please add at least one end.");
-
-        return;
-    }
-
-    const id =
-        editingId.value || Date.now().toString();
-
-    const match = {
-
-        id,
-
-        date: date.value,
-
-        format: teamFormat.value,
-
-        teamA: {
-
-            name: teamA.value.trim(),
-
-            players: getPlayers("a")
-        },
-
-        teamB: {
-
-            name: teamB.value.trim(),
-
-            players: getPlayers("b")
-        },
-
-        ends,
-
-        notes: notes.value.trim(),
-
-        created: new Date().toISOString()
-    };
-
-    matches =
-        matches.filter(
-            m => String(m.id) !== String(id)
-        );
-
-    matches.push(match);
-
-    matches.sort((a, b) =>
-        new Date(b.date) - new Date(a.date)
-    );
-
-    saveStorage();
-
-    clearForm();
-
-    render();
-}
-
-/* ================= RENDER ================= */
-
-function render() {
-
-    historyTable.innerHTML = "";
-
-    let rowsRendered = 0;
-
-    let wins = 0;
-    let losses = 0;
-    let draws = 0;
-
-    let shotsFor = 0;
-    let shotsAgainst = 0;
-
-    const teamFilter =
-        (filterTeam.value || "").toLowerCase();
-
-    matches.forEach(m => {
-
-        if (
-            !m ||
-            !m.teamA ||
-            !m.teamB ||
-            !Array.isArray(m.ends)
-        ) {
-            return;
-        }
-
-        const teamAName =
-            m.teamA.name || "Unknown";
-
-        const teamBName =
-            m.teamB.name || "Unknown";
-
-        if (
-            teamFilter &&
-            !teamAName.toLowerCase().includes(teamFilter) &&
-            !teamBName.toLowerCase().includes(teamFilter)
-        ) {
-            return;
-        }
-
-        if (
-            fromDate.value &&
-            new Date(m.date) < new Date(fromDate.value)
-        ) {
-            return;
-        }
-
-        if (
-            toDate.value &&
-            new Date(m.date) > new Date(toDate.value)
-        ) {
-            return;
-        }
-
-        const a = total(m, "a");
-        const b = total(m, "b");
-
-        shotsFor += a;
-        shotsAgainst += b;
-
-        let winner = "Draw";
-        let rowClass = "draw";
-
-        if (a > b) {
-
-            winner = teamAName;
-            wins++;
-            rowClass = "win";
-        }
-
-        else if (b > a) {
-
-            winner = teamBName;
-            losses++;
-            rowClass = "loss";
-        }
-
-        else {
-
-            draws++;
-        }
-
-        const row = document.createElement("tr");
-
-        row.className = rowClass;
-
-        row.innerHTML = `
-            <td>${m.date || "-"}</td>
-
-            <td>${teamAName}</td>
-
-            <td>${a}</td>
-
-            <td>${teamBName}</td>
-
-            <td>${b}</td>
-
-            <td>${winner}</td>
-
-            <td class="actions">
-
-                <button onclick="viewMatch('${m.id}')">
-                    👁
-                </button>
-
-                <button onclick="loadMatch('${m.id}')">
-                    ✏
-                </button>
-
-                <button onclick="deleteMatch('${m.id}')">
-                    🗑
-                </button>
-
-            </td>
-        `;
-
-        historyTable.appendChild(row);
-
-        rowsRendered++;
-    });
-
-    if (rowsRendered === 0) {
-
-        const row = document.createElement("tr");
-
-        row.innerHTML = `
-            <td colspan="7" class="notice">
-                No matches match the current filters.
-            </td>
-        `;
-
-        historyTable.appendChild(row);
-    }
-
-    stats.innerHTML = `
-        <b>Results</b><br>
-
-        Wins: ${wins} |
-        Losses: ${losses} |
-        Draws: ${draws}
-
-        <br><br>
-
-        <b>Shots</b><br>
-
-        Shots For: ${shotsFor} |
-        Shots Against: ${shotsAgainst} |
-        Difference: ${shotsFor - shotsAgainst}
-
-        <br><br>
-
-        <b>Total Matches:</b> ${rowsRendered}
-    `;
-}
-
-/* ================= VIEW MATCH ================= */
-
-function viewMatch(id) {
-
-    const m =
-        matches.find(
-            x => String(x.id) === String(id)
-        );
-
-    if (!m) return;
-
-    const a = total(m, "a");
-    const b = total(m, "b");
-
-    let winner = "Draw";
-
-    if (a > b) winner = m.teamA.name;
-    else if (b > a) winner = m.teamB.name;
-
-    function renderPlayers(team) {
-
-        let html = "";
-
-        Object.entries(team.players || {})
-        .forEach(([role, name]) => {
-
-            html += `
-                <li>
-                    <b>${capitalize(role)}</b>:
-                    ${name || "-"}
-                </li>
-            `;
-        });
-
-        return html;
-    }
-
-    let endsHTML = `
-        <table style="width:100%; border-collapse:collapse; margin-top:10px;">
-            <thead>
-                <tr>
-                    <th>End</th>
-                    <th>${m.teamA.name}</th>
-                    <th>${m.teamB.name}</th>
-                </tr>
-            </thead>
-            <tbody>
-    `;
-
-    m.ends.forEach((e, index) => {
-
-        endsHTML += `
-            <tr>
-                <td>${index + 1}</td>
-                <td>${e.a}</td>
-                <td>${e.b}</td>
-            </tr>
-        `;
-    });
-
-    endsHTML += `
-            </tbody>
-        </table>
-    `;
-
-    modalContent.innerHTML = `
-
-        <h2>
-            ${m.teamA.name}
-            vs
-            ${m.teamB.name}
-        </h2>
-
-        <p>
-            <b>Date:</b>
-            ${m.date}
-        </p>
-
-        <p>
-            <b>Format:</b>
-            ${capitalize(m.format || "fours")}
-        </p>
-
-        <p>
-            <b>Final Score:</b>
-            ${a} - ${b}
-        </p>
-
-        <p>
-            <b>Winner:</b>
-            ${winner}
-        </p>
-
-        <hr>
-
-        <h3>${m.teamA.name}</h3>
-
-        <ul>
-            ${renderPlayers(m.teamA)}
-        </ul>
-
-        <h3>${m.teamB.name}</h3>
-
-        <ul>
-            ${renderPlayers(m.teamB)}
-        </ul>
-
-        <hr>
-
-        <h3>End-by-End Scores</h3>
-
-        ${endsHTML}
-
-        <hr>
-
-        <h3>Match Notes</h3>
-
-        <p>
-            ${m.notes || "No notes added."}
-        </p>
-    `;
-
-    matchModal.style.display = "block";
-}
-
-/* ================= CLOSE MODAL ================= */
-
-function closeModal() {
-
-    matchModal.style.display = "none";
-}
-
-/* ================= CAPITALIZE ================= */
-
-function capitalize(text) {
-
-    return text.charAt(0).toUpperCase() +
-           text.slice(1);
-}
-
-/* ================= LOAD MATCH ================= */
-
-function loadMatch(id) {
-
-    const m =
-        matches.find(
-            x => String(x.id) === String(id)
-        );
-
-    if (!m) {
-
-        alert("Match not found.");
-
-        return;
-    }
-
-    editingId.value = m.id;
-
-    date.value = m.date || "";
-
-    teamA.value = m.teamA.name || "";
-    teamB.value = m.teamB.name || "";
-
-    teamFormat.value = m.format || "fours";
-
-    updatePlayerFields();
-
-    Object.entries(m.teamA.players || {})
-    .forEach(([role, value]) => {
-
-        const input =
-            document.getElementById(`a${role}`);
-
-        if (input) input.value = value;
-    });
-
-    Object.entries(m.teamB.players || {})
-    .forEach(([role, value]) => {
-
-        const input =
-            document.getElementById(`b${role}`);
-
-        if (input) input.value = value;
-    });
-
-    notes.value = m.notes || "";
-
-    endsTable.tBodies[0].innerHTML = "";
-
-    m.ends.forEach(e => {
-
-        addEnd(e.a, e.b);
-
-    });
-
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-}
-
-/* ================= DELETE MATCH ================= */
-
-function deleteMatch(id) {
-
-    if (!confirm("Delete this match?")) {
-
-        return;
-    }
-
-    matches =
-        matches.filter(
-            m => String(m.id) !== String(id)
-        );
-
-    saveStorage();
-
-    render();
-}
-
-/* ================= CLEAR FORM ================= */
-
-function clearForm() {
-
-    editingId.value = "";
-
-    date.value = "";
-
-    teamA.value = "";
-    teamB.value = "";
-
-    notes.value = "";
-
-    teamFormat.value = "fours";
-
-    updatePlayerFields();
-
-    endsTable.tBodies[0].innerHTML = "";
-
-    addEnd();
-}
-
-/* ================= EXPORT JSON ================= */
-
-function exportJSON() {
-
-    const exportData = {
-
-        version: 1,
-
-        exported: new Date().toISOString(),
-
-        matches
-    };
-
-    download(
-        JSON.stringify(exportData, null, 2),
-        "matches.json",
-        "application/json"
-    );
-}
-
-/* ================= EXPORT CSV ================= */
-
-function exportCSV() {
-
-    let csv =
-        "Date,Format,TeamA,ScoreA,TeamB,ScoreB,Winner\n";
-
-    matches.forEach(m => {
-
-        const a = total(m, "a");
-
-        const b = total(m, "b");
-
-        let winner = "Draw";
-
-        if (a > b) winner = m.teamA.name;
-        else if (b > a) winner = m.teamB.name;
-
-        csv +=
-            `"${m.date}","${m.format}","${m.teamA.name}",${a},"${m.teamB.name}",${b},"${winner}"\n`;
-
-    });
-
-    download(csv, "matches.csv", "text/csv");
-}
-
-/* ================= IMPORT JSON ================= */
-
-function importJSON(event) {
-
-    const file = event.target.files[0];
-
-    if (!file) return;
-
-    const reader = new FileReader();
-
-    reader.onload = () => {
-
-        try {
-
-            const parsed =
-                JSON.parse(reader.result);
-
-            const imported =
-                parsed.matches || parsed;
-
-            if (!Array.isArray(imported)) {
-
-                alert("Invalid backup file.");
-
-                return;
-            }
-
-            matches = imported.filter(m =>
-
-                m &&
-                m.teamA &&
-                m.teamB &&
-                Array.isArray(m.ends)
-
-            );
-
-            saveStorage();
-
-            render();
-
-            alert(
-                `${matches.length} matches imported successfully.`
-            );
-        }
-
-        catch (err) {
-
-            console.error(err);
-
-            alert(
-                "Could not import JSON file."
-            );
-        }
-    };
-
-    reader.readAsText(file);
-}
-
-/* ================= CLEAR ALL ================= */
-
-function clearAll() {
-
-    if (
-        !confirm(
-            "Delete ALL saved matches?"
-        )
-    ) return;
-
-    localStorage.removeItem("matches");
-
-    matches = [];
-
-    saveStorage();
-
-    render();
-
-    clearForm();
-}
-
-/* ================= DOWNLOAD ================= */
-
-function download(data, name, type) {
-
-    const blob =
-        new Blob([data], { type });
-
-    const a =
-        document.createElement("a");
-
-    a.href =
-        URL.createObjectURL(blob);
-
-    a.download = name;
-
-    a.click();
-
-    URL.revokeObjectURL(a.href);
-}
-
-
-/* ================= THEMES ================= */
+/* ================= THEME ================= */
 
 function changeTheme(theme) {
 
@@ -1484,24 +556,339 @@ function changeTheme(theme) {
 
 function loadTheme() {
 
-    const savedTheme =
+    const saved =
         localStorage.getItem("selectedTheme")
         || "light-theme";
 
-    document.body.className = savedTheme;
+    document.body.className = saved;
 
-    document.getElementById(
-        "themeSelector"
-    ).value = savedTheme;
+    themeSelector.value = saved;
 }
 
-
-    
-
-/* ================= INITIALISE ================= */
 loadTheme();
-    
-updatePlayerFields();
+
+/* ================= STORAGE ================= */
+
+let matches =
+    JSON.parse(
+        localStorage.getItem("matches")
+    ) || [];
+
+/* ================= ADD END ================= */
+
+function addEnd(a = 0, b = 0) {
+
+    const tbody =
+        document.querySelector(
+            "#endsTable tbody"
+        );
+
+    const row =
+        document.createElement("tr");
+
+    row.innerHTML = `
+
+        <td data-label="End">
+            ${tbody.rows.length + 1}
+        </td>
+
+        <td data-label="Team A">
+
+            <input
+                type="number"
+                min="0"
+                value="${a}"
+            >
+
+        </td>
+
+        <td data-label="Team B">
+
+            <input
+                type="number"
+                min="0"
+                value="${b}"
+            >
+
+        </td>
+
+        <td data-label="Remove">
+
+            <button onclick="removeEnd(this)">
+                ❌
+            </button>
+
+        </td>
+    `;
+
+    tbody.appendChild(row);
+}
+
+/* ================= REMOVE END ================= */
+
+function removeEnd(button) {
+
+    button.closest("tr").remove();
+
+    renumberEnds();
+}
+
+/* ================= RENUMBER ================= */
+
+function renumberEnds() {
+
+    [...document.querySelectorAll(
+        "#endsTable tbody tr"
+    )].forEach((row, index) => {
+
+        row.children[0].innerHTML =
+            index + 1;
+    });
+}
+
+/* ================= SAVE MATCH ================= */
+
+function saveMatch() {
+
+    if (
+        !date.value ||
+        !teamA.value.trim() ||
+        !teamB.value.trim()
+    ) {
+
+        alert(
+            "Please complete all fields."
+        );
+
+        return;
+    }
+
+    const ends =
+        [...document.querySelectorAll(
+            "#endsTable tbody tr"
+        )].map(row => ({
+
+            a: Number(
+                row.children[1]
+                .querySelector("input").value
+            ),
+
+            b: Number(
+                row.children[2]
+                .querySelector("input").value
+            )
+        }));
+
+    const match = {
+
+        id: Date.now(),
+
+        date: date.value,
+
+        teamA: teamA.value.trim(),
+
+        teamB: teamB.value.trim(),
+
+        ends,
+
+        notes: notes.value.trim()
+    };
+
+    matches.push(match);
+
+    localStorage.setItem(
+        "matches",
+        JSON.stringify(matches)
+    );
+
+    render();
+
+    clearForm();
+}
+
+/* ================= TOTAL ================= */
+
+function total(match, side) {
+
+    return match.ends.reduce(
+        (sum, end) =>
+            sum + Number(end[side]),
+        0
+    );
+}
+
+/* ================= RENDER ================= */
+
+function render() {
+
+    matchHistory.innerHTML = "";
+
+    matches.forEach(m => {
+
+        const a =
+            total(m, "a");
+
+        const b =
+            total(m, "b");
+
+        let winner = "Draw";
+        let rowClass = "draw";
+
+        if (a > b) {
+
+            winner = m.teamA;
+
+            rowClass = "win";
+        }
+
+        else if (b > a) {
+
+            winner = m.teamB;
+
+            rowClass = "loss";
+        }
+
+        const row =
+            document.createElement("tr");
+
+        row.className = rowClass;
+
+        row.innerHTML = `
+
+            <td data-label="Date">
+                ${m.date}
+            </td>
+
+            <td data-label="Team A">
+                ${m.teamA}
+            </td>
+
+            <td data-label="Score A">
+                ${a}
+            </td>
+
+            <td data-label="Team B">
+                ${m.teamB}
+            </td>
+
+            <td data-label="Score B">
+                ${b}
+            </td>
+
+            <td data-label="Winner">
+                ${winner}
+            </td>
+
+            <td
+                data-label="Actions"
+                class="actions"
+            >
+
+                <button onclick="viewMatch(${m.id})">
+                    👁
+                </button>
+
+                <button onclick="deleteMatch(${m.id})">
+                    🗑
+                </button>
+
+            </td>
+        `;
+
+        matchHistory.appendChild(row);
+    });
+}
+
+/* ================= VIEW MATCH ================= */
+
+function viewMatch(id) {
+
+    const match =
+        matches.find(m => m.id == id);
+
+    if (!match) return;
+
+    const a =
+        total(match, "a");
+
+    const b =
+        total(match, "b");
+
+    modalContent.innerHTML = `
+
+        <h2>
+            ${match.teamA}
+            vs
+            ${match.teamB}
+        </h2>
+
+        <p>
+            <b>Date:</b>
+            ${match.date}
+        </p>
+
+        <p>
+            <b>Final Score:</b>
+            ${a} - ${b}
+        </p>
+
+        <h3>Notes</h3>
+
+        <p>
+            ${match.notes || "No notes."}
+        </p>
+    `;
+
+    matchModal.style.display =
+        "block";
+}
+
+/* ================= CLOSE MODAL ================= */
+
+function closeModal() {
+
+    matchModal.style.display =
+        "none";
+}
+
+/* ================= DELETE ================= */
+
+function deleteMatch(id) {
+
+    if (
+        !confirm("Delete match?")
+    ) return;
+
+    matches =
+        matches.filter(
+            m => m.id != id
+        );
+
+    localStorage.setItem(
+        "matches",
+        JSON.stringify(matches)
+    );
+
+    render();
+}
+
+/* ================= CLEAR FORM ================= */
+
+function clearForm() {
+
+    date.value = "";
+    teamA.value = "";
+    teamB.value = "";
+    notes.value = "";
+
+    document.querySelector(
+        "#endsTable tbody"
+    ).innerHTML = "";
+
+    addEnd();
+}
+
+/* ================= INIT ================= */
 
 clearForm();
 

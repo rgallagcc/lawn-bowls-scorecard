@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Lawn Bowls – Advanced Scorecard</title>
 
 <style>
@@ -10,38 +12,75 @@ body {
     background: #f4f4f4;
     margin: 20px;
 }
-h1,h2,h3 { margin-bottom: 5px; }
+
+h1,h2,h3 {
+    margin-bottom: 5px;
+}
+
 .card {
     background: #fff;
     padding: 15px;
     margin-bottom: 20px;
-    border-radius: 5px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.08);
 }
-label { display: block; margin-top: 8px; }
+
+label {
+    display: block;
+    margin-top: 8px;
+}
+
 input, textarea {
-    padding: 5px;
+    padding: 6px;
     width: 250px;
 }
+
 button {
     margin-top: 10px;
-    padding: 6px 10px;
+    padding: 6px 12px;
+    cursor: pointer;
 }
+
 table {
     width: 100%;
     margin-top: 10px;
     border-collapse: collapse;
 }
+
 th, td {
     border: 1px solid #ccc;
-    padding: 5px;
+    padding: 6px;
     text-align: center;
 }
-th { background: #e0e0e0; }
-.small { width: 70px; }
+
+th {
+    background: #e0e0e0;
+}
+
+.small {
+    width: 70px;
+}
+
 .notice {
     text-align: center;
     font-style: italic;
     color: #555;
+}
+
+.actions button {
+    margin: 2px;
+}
+
+.win {
+    background: #d4edda;
+}
+
+.loss {
+    background: #f8d7da;
+}
+
+.draw {
+    background: #fff3cd;
 }
 </style>
 </head>
@@ -52,164 +91,381 @@ th { background: #e0e0e0; }
 
 <!-- ================= ADD / EDIT MATCH ================= -->
 <div class="card">
+
 <h2>Add / Edit Match</h2>
 
 <input type="hidden" id="editingId">
 
-<label>Date <input type="date" id="date"></label>
+<label>
+Date
+<input type="date" id="date">
+</label>
 
 <h3>Team A</h3>
-<label>Team Name <input id="teamA"></label>
-<label>Lead <input id="aLead"></label>
-<label>Second <input id="aSecond"></label>
-<label>Skip <input id="aSkip"></label>
+
+<label>
+Team Name
+<input id="teamA">
+</label>
+
+<label>
+Lead
+<input id="aLead">
+</label>
+
+<label>
+Second
+<input id="aSecond">
+</label>
+
+<label>
+Skip
+<input id="aSkip">
+</label>
 
 <h3>Team B</h3>
-<label>Team Name <input id="teamB"></label>
-<label>Lead <input id="bLead"></label>
-<label>Second <input id="bSecond"></label>
-<label>Skip <input id="bSkip"></label>
+
+<label>
+Team Name
+<input id="teamB">
+</label>
+
+<label>
+Lead
+<input id="bLead">
+</label>
+
+<label>
+Second
+<input id="bSecond">
+</label>
+
+<label>
+Skip
+<input id="bSkip">
+</label>
 
 <h3>Ends</h3>
+
 <table id="endsTable">
 <thead>
-<tr><th>End</th><th>A</th><th>B</th></tr>
+<tr>
+<th>End</th>
+<th>Team A</th>
+<th>Team B</th>
+<th>Remove</th>
+</tr>
 </thead>
+
 <tbody></tbody>
 </table>
 
 <button onclick="addEnd()">Add End</button>
 
-<label>Match Notes
+<label>
+Match Notes
 <textarea id="notes" rows="3"></textarea>
 </label>
 
+<br>
+
 <button onclick="saveMatch()">Save Match</button>
+
 </div>
 
 <!-- ================= FILTERS ================= -->
 <div class="card">
+
 <h2>Filters</h2>
-<label>Filter by Team
+
+<label>
+Filter by Team
 <input id="filterTeam" oninput="render()">
 </label>
-<label>From Date
+
+<label>
+From Date
 <input type="date" id="fromDate" onchange="render()">
 </label>
-<label>To Date
+
+<label>
+To Date
 <input type="date" id="toDate" onchange="render()">
 </label>
+
 </div>
 
 <!-- ================= HISTORY ================= -->
 <div class="card">
+
 <h2>Match History</h2>
+
 <table>
-  <thead>
-    <tr>
-      <th>Date</th>
-      <th>Team A</th>
-      <th>Score</th>
-      <th>Team B</th>
-      <th>Score</th>
-      <th>Winner</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody id="history"></tbody>
+
+<thead>
+<tr>
+<th>Date</th>
+<th>Team A</th>
+<th>Score</th>
+<th>Team B</th>
+<th>Score</th>
+<th>Winner</th>
+<th>Actions</th>
+</tr>
+</thead>
+
+<tbody id="history"></tbody>
+
 </table>
+
 </div>
 
 <!-- ================= STATS ================= -->
 <div class="card">
+
 <h2>Statistics</h2>
+
 <div id="stats"></div>
+
 </div>
 
 <!-- ================= IMPORT / EXPORT ================= -->
 <div class="card">
+
 <h2>Import / Export</h2>
+
 <button onclick="exportJSON()">Export JSON</button>
 <button onclick="exportCSV()">Export CSV</button>
+
 <input type="file" accept=".json" onchange="importJSON(event)">
+
 <button onclick="clearAll()">Clear All</button>
+
+<p id="lastSaved"></p>
+
 </div>
 
 <script>
-/* ================= DATA ================= */
-let matches = JSON.parse(localStorage.getItem("matches")) || [];
+
+/* ================= STORAGE ================= */
+
+let matches = [];
+
+loadStorage();
+
+/* ================= LOAD STORAGE ================= */
+
+function loadStorage() {
+
+    try {
+
+        const saved = JSON.parse(localStorage.getItem("matches"));
+
+        if (Array.isArray(saved)) {
+            matches = saved;
+        }
+
+    } catch (err) {
+
+        console.error("Storage load failed", err);
+        matches = [];
+
+    }
+}
+
+/* ================= SAVE STORAGE ================= */
+
+function saveStorage() {
+
+    localStorage.setItem(
+        "matches",
+        JSON.stringify(matches)
+    );
+
+    lastSaved.innerHTML =
+        "Last saved: " +
+        new Date().toLocaleString();
+}
 
 /* ================= END MANAGEMENT ================= */
+
 function addEnd(a = 0, b = 0) {
+
     const tbody = endsTable.tBodies[0];
+
     const row = document.createElement("tr");
+
     row.innerHTML = `
         <td>${tbody.rows.length + 1}</td>
-        <td><input class="small" type="number" value="${a}"></td>
-        <td><input class="small" type="number" value="${b}"></td>
+
+        <td>
+            <input class="small" type="number" min="0" value="${a}">
+        </td>
+
+        <td>
+            <input class="small" type="number" min="0" value="${b}">
+        </td>
+
+        <td>
+            <button onclick="removeEnd(this)">❌</button>
+        </td>
     `;
+
     tbody.appendChild(row);
 }
 
-/* ================= TOTAL CALCULATION (SAFE) ================= */
+function removeEnd(button) {
+
+    button.closest("tr").remove();
+
+    renumberEnds();
+}
+
+function renumberEnds() {
+
+    [...endsTable.tBodies[0].rows].forEach((row, index) => {
+
+        row.cells[0].innerText = index + 1;
+
+    });
+}
+
+/* ================= TOTALS ================= */
+
 function total(match, side) {
+
+    if (!match.ends || !Array.isArray(match.ends)) {
+        return 0;
+    }
+
     return match.ends.reduce((sum, end) => {
-        const value = side === "a" ? end.a : end.b;
-        return sum + Number(value || 0);
+
+        const value =
+            side === "a"
+            ? Number(end.a || 0)
+            : Number(end.b || 0);
+
+        return sum + value;
+
     }, 0);
 }
 
 /* ================= SAVE MATCH ================= */
+
 function saveMatch() {
-    if (!date.value || !teamA.value || !teamB.value) {
+
+    if (
+        !date.value ||
+        !teamA.value.trim() ||
+        !teamB.value.trim()
+    ) {
+
         alert("Please enter a date and both team names.");
         return;
     }
 
     const ends = [...endsTable.tBodies[0].rows].map(r => ({
-        a: Number(r.cells[1].firstChild.value || 0),
-        b: Number(r.cells[2].firstChild.value || 0)
+
+        a: Number(r.cells[1].firstElementChild.value || 0),
+
+        b: Number(r.cells[2].firstElementChild.value || 0)
+
     }));
 
-    const id = editingId.value || Date.now();
+    if (ends.length === 0) {
+
+        alert("Please add at least one end.");
+        return;
+    }
+
+    const id = editingId.value || Date.now().toString();
 
     const match = {
+
         id,
+
         date: date.value,
+
         teamA: {
-            name: teamA.value,
-            players: { lead: aLead.value, second: aSecond.value, skip: aSkip.value }
+
+            name: teamA.value.trim(),
+
+            players: {
+                lead: aLead.value.trim(),
+                second: aSecond.value.trim(),
+                skip: aSkip.value.trim()
+            }
         },
+
         teamB: {
-            name: teamB.value,
-            players: { lead: bLead.value, second: bSecond.value, skip: bSkip.value }
+
+            name: teamB.value.trim(),
+
+            players: {
+                lead: bLead.value.trim(),
+                second: bSecond.value.trim(),
+                skip: bSkip.value.trim()
+            }
         },
+
         ends,
-        notes: notes.value
+
+        notes: notes.value.trim(),
+
+        created: new Date().toISOString()
     };
 
-    matches = matches.filter(m => m.id != id);
+    matches = matches.filter(m => String(m.id) !== String(id));
+
     matches.push(match);
-    localStorage.setItem("matches", JSON.stringify(matches));
+
+    matches.sort((a, b) =>
+        new Date(b.date) - new Date(a.date)
+    );
+
+    saveStorage();
 
     clearForm();
+
     render();
 }
 
-/* ================= RENDER HISTORY ================= */
+/* ================= RENDER ================= */
+
 function render() {
+
     history.innerHTML = "";
+
     let rowsRendered = 0;
 
-    let wins = 0, losses = 0, draws = 0;
-    const teamFilter = filterTeam.value.toLowerCase();
+    let wins = 0;
+    let losses = 0;
+    let draws = 0;
+
+    let shotsFor = 0;
+    let shotsAgainst = 0;
+
+    const teamFilter =
+        (filterTeam.value || "").toLowerCase();
 
     matches.forEach(m => {
 
         if (
+            !m ||
+            !m.teamA ||
+            !m.teamB ||
+            !Array.isArray(m.ends)
+        ) {
+            return;
+        }
+
+        const teamAName = m.teamA.name || "Unknown";
+        const teamBName = m.teamB.name || "Unknown";
+
+        if (
             teamFilter &&
-            !m.teamA.name.toLowerCase().includes(teamFilter) &&
-            !m.teamB.name.toLowerCase().includes(teamFilter)
+            !teamAName.toLowerCase().includes(teamFilter) &&
+            !teamBName.toLowerCase().includes(teamFilter)
         ) return;
 
         if (fromDate.value && m.date < fromDate.value) return;
@@ -218,115 +474,330 @@ function render() {
         const a = total(m, "a");
         const b = total(m, "b");
 
+        shotsFor += a;
+        shotsAgainst += b;
+
         let winner = "Draw";
-        if (a > b) { winner = m.teamA.name; wins++; }
-        else if (b > a) { winner = m.teamB.name; losses++; }
-        else { draws++; }
+        let rowClass = "draw";
+
+        if (a > b) {
+
+            winner = teamAName;
+            wins++;
+            rowClass = "win";
+
+        } else if (b > a) {
+
+            winner = teamBName;
+            losses++;
+            rowClass = "loss";
+
+        } else {
+
+            draws++;
+
+        }
 
         history.innerHTML += `
-        <tr>
-            <td>${m.date}</td>
-            <td>${m.teamA.name}</td>
+        <tr class="${rowClass}">
+
+            <td>${m.date || "-"}</td>
+
+            <td>${teamAName}</td>
+
             <td>${a}</td>
-            <td>${m.teamB.name}</td>
+
+            <td>${teamBName}</td>
+
             <td>${b}</td>
+
             <td>${winner}</td>
-            <td><button onclick="loadMatch(${m.id})">✏</button></td>
-        </tr>`;
+
+            <td class="actions">
+
+                <button onclick="loadMatch('${m.id}')">
+                    ✏
+                </button>
+
+                <button onclick="deleteMatch('${m.id}')">
+                    🗑
+                </button>
+
+            </td>
+
+        </tr>
+        `;
+
         rowsRendered++;
     });
 
     if (rowsRendered === 0) {
+
         history.innerHTML = `
-            <tr>
-                <td colspan="7" class="notice">
-                    No matches match the current filters.
-                </td>
-            </tr>
+        <tr>
+            <td colspan="7" class="notice">
+                No matches match the current filters.
+            </td>
+        </tr>
         `;
     }
 
     stats.innerHTML = `
         <b>Results</b><br>
-        Wins: ${wins} | Losses: ${losses} | Draws: ${draws}
+
+        Wins: ${wins} |
+        Losses: ${losses} |
+        Draws: ${draws}
+
+        <br><br>
+
+        <b>Shots</b><br>
+
+        Shots For: ${shotsFor} |
+        Shots Against: ${shotsAgainst} |
+        Difference: ${shotsFor - shotsAgainst}
+
+        <br><br>
+
+        <b>Total Matches:</b> ${matches.length}
     `;
 }
 
-/* ================= LOAD FOR EDIT ================= */
+/* ================= LOAD MATCH ================= */
+
 function loadMatch(id) {
-    const m = matches.find(x => x.id === id);
 
-    editingId.value = id;
-    date.value = m.date;
-    teamA.value = m.teamA.name;
-    teamB.value = m.teamB.name;
+    const m = matches.find(
+        x => String(x.id) === String(id)
+    );
 
-    aLead.value = m.teamA.players.lead;
-    aSecond.value = m.teamA.players.second;
-    aSkip.value = m.teamA.players.skip;
-    bLead.value = m.teamB.players.lead;
-    bSecond.value = m.teamB.players.second;
-    bSkip.value = m.teamB.players.skip;
+    if (!m) {
+        alert("Match not found.");
+        return;
+    }
+
+    editingId.value = m.id;
+
+    date.value = m.date || "";
+
+    teamA.value = m.teamA.name || "";
+    teamB.value = m.teamB.name || "";
+
+    aLead.value = m.teamA.players?.lead || "";
+    aSecond.value = m.teamA.players?.second || "";
+    aSkip.value = m.teamA.players?.skip || "";
+
+    bLead.value = m.teamB.players?.lead || "";
+    bSecond.value = m.teamB.players?.second || "";
+    bSkip.value = m.teamB.players?.skip || "";
 
     notes.value = m.notes || "";
 
     endsTable.tBodies[0].innerHTML = "";
-    m.ends.forEach(e => addEnd(e.a, e.b));
-}
 
-/* ================= CLEAR FORM + FILTERS ================= */
-function clearForm() {
-    editingId.value = "";
-    endsTable.tBodies[0].innerHTML = "";
-    document.querySelectorAll("input, textarea").forEach(e => {
-        if (e.type !== "date") e.value = "";
+    m.ends.forEach(e => {
+
+        addEnd(e.a, e.b);
+
     });
 
-    filterTeam.value = "";
-    fromDate.value = "";
-    toDate.value = "";
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
 }
 
-/* ================= IMPORT / EXPORT ================= */
-function exportJSON() {
-    download(JSON.stringify(matches, null, 2), "matches.json", "application/json");
+/* ================= DELETE MATCH ================= */
+
+function deleteMatch(id) {
+
+    if (!confirm("Delete this match?")) {
+        return;
+    }
+
+    matches = matches.filter(
+        m => String(m.id) !== String(id)
+    );
+
+    saveStorage();
+
+    render();
 }
+
+/* ================= CLEAR FORM ================= */
+
+function clearForm() {
+
+    editingId.value = "";
+
+    date.value = "";
+
+    teamA.value = "";
+    teamB.value = "";
+
+    aLead.value = "";
+    aSecond.value = "";
+    aSkip.value = "";
+
+    bLead.value = "";
+    bSecond.value = "";
+    bSkip.value = "";
+
+    notes.value = "";
+
+    endsTable.tBodies[0].innerHTML = "";
+
+    addEnd();
+}
+
+/* ================= EXPORT JSON ================= */
+
+function exportJSON() {
+
+    const exportData = {
+
+        version: 1,
+
+        exported: new Date().toISOString(),
+
+        matches
+
+    };
+
+    download(
+
+        JSON.stringify(exportData, null, 2),
+
+        "matches.json",
+
+        "application/json"
+    );
+}
+
+/* ================= EXPORT CSV ================= */
 
 function exportCSV() {
-    let csv = "Date,TeamA,ScoreA,TeamB,ScoreB\n";
+
+    let csv =
+        "Date,TeamA,ScoreA,TeamB,ScoreB,Winner\n";
+
     matches.forEach(m => {
-        csv += `${m.date},${m.teamA.name},${total(m,"a")},${m.teamB.name},${total(m,"b")}\n`;
+
+        const a = total(m, "a");
+        const b = total(m, "b");
+
+        let winner = "Draw";
+
+        if (a > b) winner = m.teamA.name;
+        else if (b > a) winner = m.teamB.name;
+
+        csv +=
+            `"${m.date}","${m.teamA.name}",${a},"${m.teamB.name}",${b},"${winner}"\n`;
+
     });
+
     download(csv, "matches.csv", "text/csv");
 }
 
+/* ================= IMPORT JSON ================= */
+
 function importJSON(event) {
+
+    const file = event.target.files[0];
+
+    if (!file) return;
+
     const reader = new FileReader();
+
     reader.onload = () => {
-        matches = JSON.parse(reader.result);
-        localStorage.setItem("matches", reader.result);
-        render();
+
+        try {
+
+            const parsed = JSON.parse(reader.result);
+
+            const imported =
+                parsed.matches || parsed;
+
+            if (!Array.isArray(imported)) {
+
+                alert("Invalid backup file.");
+                return;
+            }
+
+            matches = imported.filter(m =>
+
+                m &&
+                m.teamA &&
+                m.teamB &&
+                Array.isArray(m.ends)
+
+            );
+
+            saveStorage();
+
+            render();
+
+            alert(
+                `${matches.length} matches imported successfully.`
+            );
+
+        } catch (err) {
+
+            console.error(err);
+
+            alert(
+                "Could not import JSON file."
+            );
+        }
     };
-    reader.readAsText(event.target.files[0]);
+
+    reader.readAsText(file);
 }
+
+/* ================= CLEAR ALL ================= */
 
 function clearAll() {
-    if (confirm("Delete all matches?")) {
-        localStorage.clear();
-        matches = [];
-        render();
-    }
+
+    if (
+        !confirm(
+            "Delete ALL saved matches?"
+        )
+    ) return;
+
+    localStorage.removeItem("matches");
+
+    matches = [];
+
+    saveStorage();
+
+    render();
+
+    clearForm();
 }
+
+/* ================= DOWNLOAD ================= */
 
 function download(data, name, type) {
+
     const blob = new Blob([data], { type });
+
     const a = document.createElement("a");
+
     a.href = URL.createObjectURL(blob);
+
     a.download = name;
+
     a.click();
+
+    URL.revokeObjectURL(a.href);
 }
 
+/* ================= INITIALISE ================= */
+
+clearForm();
+
 render();
+
 </script>
 
 </body>

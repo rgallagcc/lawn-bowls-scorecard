@@ -289,6 +289,20 @@ th {
 @media (max-width: 600px) {
 
     /* Ends entry table: stack into compact rows */
+    #endsTable tfoot tr {
+        display: grid;
+        grid-template-columns: 32px 1fr 1fr 44px;
+        gap: 4px;
+        align-items: center;
+        padding: 6px 0;
+    }
+
+    #endsTable tfoot td {
+        border: none;
+        padding: 4px 2px;
+        border-top: 2px solid var(--border);
+    }
+
     #endsTable thead {
         display: none;
     }
@@ -428,6 +442,231 @@ th {
 
 .modal-box .table-wrapper table {
     min-width: 0;
+}
+
+/* ================= BUTTON VARIANTS ================= */
+
+.btn-secondary {
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid var(--border);
+}
+
+.btn-secondary:hover {
+    opacity: 0.8;
+}
+
+.btn-danger {
+    background: #c0392b;
+    color: #fff;
+    border: none;
+}
+
+.btn-danger:hover {
+    background: #a93226;
+}
+
+/* ================= ENDS TOOLBAR ================= */
+
+.ends-toolbar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.ends-toolbar button {
+    width: auto;
+    font-size: 0.85rem;
+    padding: 6px 14px;
+}
+
+/* ================= QUICK SCORE MODE ================= */
+
+.quick-score-toggle-active {
+    background: var(--accent) !important;
+    color: #fff !important;
+    border-color: var(--accent) !important;
+}
+
+/* quick-score row layout: # | [- score +] | [- score +] | ❌ */
+#endsTable.quick-mode tbody tr {
+    display: grid;
+    grid-template-columns: 28px 1fr 1fr 36px;
+    gap: 4px;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    padding: 6px 0;
+}
+
+#endsTable.quick-mode thead,
+#endsTable.quick-mode tfoot tr {
+    display: grid;
+    grid-template-columns: 28px 1fr 1fr 36px;
+    gap: 4px;
+}
+
+#endsTable.quick-mode thead {
+    display: none;
+}
+
+#endsTable.quick-mode tfoot td {
+    border: none;
+    padding: 4px 2px;
+}
+
+#endsTable.quick-mode tbody td:last-child button {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    padding: 0;
+    font-size: 0.85rem;
+}
+
+.quick-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+}
+
+.quick-cell .q-btn {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    padding: 0;
+    font-size: 1.1rem;
+    line-height: 1;
+    border-radius: 6px;
+    flex-shrink: 0;
+}
+
+.quick-cell .q-score {
+    min-width: 24px;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+/* ================= CONFIRM MODAL ================= */
+
+.confirm-box {
+    max-width: 340px;
+    text-align: center;
+    padding: 28px 24px;
+}
+
+.confirm-box p {
+    font-size: 1rem;
+    margin-bottom: 20px;
+}
+
+.confirm-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.confirm-actions button {
+    width: auto;
+    padding: 8px 22px;
+}
+
+/* ================= STICKY EXPORT BAR ================= */
+
+.sticky-export {
+
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    background: var(--card);
+    border-top: 1px solid var(--border);
+    box-shadow: 0 -2px 10px var(--shadow);
+
+    padding: 10px 16px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+
+    z-index: 500;
+}
+
+.sticky-export-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.sticky-export-actions button {
+    width: auto;
+    padding: 7px 14px;
+    font-size: 0.85rem;
+}
+
+.export-reminder {
+    font-size: 0.82rem;
+    color: var(--text);
+    opacity: 0.75;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.export-reminder.overdue {
+    color: #c0392b;
+    opacity: 1;
+    font-weight: bold;
+}
+
+/* push page content up so sticky bar doesn't cover it */
+body {
+    padding-bottom: 64px;
+}
+
+/* ================= ENDS TOTALS ROW ================= */
+
+#endsTotalsRow td {
+    border-top: 2px solid var(--border);
+    padding: 8px 6px;
+    font-size: 1rem;
+}
+
+#totalA, #totalB {
+    font-size: 1.15rem;
+}
+
+#endsTotalsRow.a-winning #totalA {
+    color: #1a7a3a;
+}
+
+#endsTotalsRow.b-winning #totalB {
+    color: #1a7a3a;
+}
+
+#endsTotalsRow.a-winning #totalB,
+#endsTotalsRow.b-winning #totalA {
+    color: #b03030;
+}
+
+[data-theme="dark"] #endsTotalsRow.a-winning #totalA,
+[data-theme="dark"] #endsTotalsRow.b-winning #totalB {
+    color: #5dbb6f;
+}
+
+[data-theme="dark"] #endsTotalsRow.a-winning #totalB,
+[data-theme="dark"] #endsTotalsRow.b-winning #totalA {
+    color: #e07070;
+}
+
+/* ================= STATS LABEL ================= */
+
+.stats-perspective {
+    font-size: 0.82rem;
+    opacity: 0.65;
+    margin-bottom: 8px;
 }
 
 /* ================= MODAL ================= */
@@ -627,7 +866,13 @@ Team Name
 
 <h3>Ends</h3>
 
-<div class="ends-col-hint">
+<div class="ends-toolbar">
+    <button id="quickScoreToggle" onclick="toggleQuickScore()" class="btn-secondary">
+        ⚡ Quick Score: OFF
+    </button>
+</div>
+
+<div class="ends-col-hint" id="endsColHint">
     <span>#</span>
     <span>Team A</span>
     <span>Team B</span>
@@ -648,6 +893,15 @@ Team Name
 </thead>
 
 <tbody></tbody>
+
+<tfoot>
+<tr id="endsTotalsRow">
+    <td><strong>Total</strong></td>
+    <td id="totalA"><strong>0</strong></td>
+    <td id="totalB"><strong>0</strong></td>
+    <td></td>
+</tr>
+</tfoot>
 
 </table>
 
@@ -751,6 +1005,8 @@ To Date
 
 <h2>Statistics</h2>
 
+<div id="statsPerspective" class="stats-perspective"></div>
+
 <div id="stats"></div>
 
 </div>
@@ -766,11 +1022,11 @@ To Date
 <div>
 
 <button onclick="exportJSON()">
-Export JSON
+⬇ Export JSON
 </button>
 
 <button onclick="exportCSV()">
-Export CSV
+⬇ Export CSV
 </button>
 
 </div>
@@ -784,7 +1040,7 @@ onchange="importJSON(event)"
 >
 
 <button onclick="clearAll()">
-Clear All
+🗑 Clear All
 </button>
 
 </div>
@@ -792,6 +1048,40 @@ Clear All
 </div>
 
 <p id="lastSaved"></p>
+
+</div>
+
+<!-- ================= CONFIRM DELETE MODAL ================= -->
+
+<div id="confirmModal" class="modal" style="display:none">
+    <div class="modal-box confirm-box">
+        <p id="confirmMessage">Are you sure?</p>
+        <div class="confirm-actions">
+            <button id="confirmYes" class="btn-danger">🗑 Delete</button>
+            <button onclick="closeConfirm()" class="btn-secondary">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- ================= STICKY EXPORT BAR ================= -->
+
+<div class="sticky-export">
+
+    <span id="exportReminder" class="export-reminder">
+        Checking export status…
+    </span>
+
+    <div class="sticky-export-actions">
+
+        <button onclick="exportJSON()">
+            ⬇ JSON
+        </button>
+
+        <button onclick="exportCSV()">
+            ⬇ CSV
+        </button>
+
+    </div>
 
 </div>
 
@@ -858,6 +1148,12 @@ loadTheme();
 
 const historyTable =
     document.getElementById("matchHistory");
+
+const statsPerspective =
+    document.getElementById("statsPerspective");
+
+const exportReminder =
+    document.getElementById("exportReminder");
 
 /* ================= STORAGE ================= */
 
@@ -986,6 +1282,92 @@ function getPlayers(prefix) {
     return players;
 }
 
+/* ================= LIVE TOTALS ================= */
+
+function updateTotals() {
+
+    let sumA = 0, sumB = 0;
+
+    [...endsTable.tBodies[0].rows].forEach(r => {
+
+        const aEl = r.cells[1].querySelector(".q-score") || r.cells[1].firstElementChild;
+        const bEl = r.cells[2].querySelector(".q-score") || r.cells[2].firstElementChild;
+
+        sumA += Number(aEl?.textContent ?? aEl?.value ?? 0);
+        sumB += Number(bEl?.textContent ?? bEl?.value ?? 0);
+    });
+
+    document.getElementById("totalA").innerHTML = `<strong>${sumA}</strong>`;
+    document.getElementById("totalB").innerHTML = `<strong>${sumB}</strong>`;
+
+    const row = document.getElementById("endsTotalsRow");
+    row.classList.remove("a-winning", "b-winning");
+
+    if (sumA > sumB) row.classList.add("a-winning");
+    else if (sumB > sumA) row.classList.add("b-winning");
+}
+
+/* ================= QUICK SCORE ================= */
+
+let quickScoreMode = false;
+
+function toggleQuickScore() {
+
+    quickScoreMode = !quickScoreMode;
+
+    const btn = document.getElementById("quickScoreToggle");
+    btn.textContent = `⚡ Quick Score: ${quickScoreMode ? "ON" : "OFF"}`;
+    btn.classList.toggle("quick-score-toggle-active", quickScoreMode);
+
+    endsTable.classList.toggle("quick-mode", quickScoreMode);
+
+    // Rebuild all existing rows in new mode
+    const tbody = endsTable.tBodies[0];
+    const rows = [...tbody.rows];
+
+    rows.forEach(row => {
+
+        const endNum = row.cells[0].getAttribute("data-end") || row.cells[0].innerText.trim();
+
+        if (quickScoreMode) {
+            // read current value from input
+            const a = Number(row.cells[1].firstElementChild?.value || 0);
+            const b = Number(row.cells[2].firstElementChild?.value || 0);
+            row.cells[1].innerHTML = quickCell("a", a, row);
+            row.cells[2].innerHTML = quickCell("b", b, row);
+        } else {
+            // read current value from score span
+            const a = Number(row.cells[1].querySelector(".q-score")?.textContent || row.cells[1].firstElementChild?.value || 0);
+            const b = Number(row.cells[2].querySelector(".q-score")?.textContent || row.cells[2].firstElementChild?.value || 0);
+            row.cells[1].innerHTML = `<input class="small" type="number" min="0" value="${a}">`;
+            row.cells[2].innerHTML = `<input class="small" type="number" min="0" value="${b}">`;
+            row.cells[1].firstElementChild.addEventListener("input", updateTotals);
+            row.cells[2].firstElementChild.addEventListener("input", updateTotals);
+        }
+    });
+
+    // show/hide the col hint
+    const hint = document.getElementById("endsColHint");
+    if (hint) hint.style.display = quickScoreMode ? "none" : "";
+
+    updateTotals();
+}
+
+function quickCell(side, value, row) {
+    return `<div class="quick-cell">
+        <button class="q-btn btn-secondary" onclick="adjustScore(this, -1)" type="button">−</button>
+        <span class="q-score">${value}</span>
+        <button class="q-btn btn-secondary" onclick="adjustScore(this, 1)" type="button">+</button>
+    </div>`;
+}
+
+function adjustScore(btn, delta) {
+    const span = btn.parentElement.querySelector(".q-score");
+    const newVal = Math.max(0, Number(span.textContent) + delta);
+    span.textContent = newVal;
+    updateTotals();
+}
+
 /* ================= END MANAGEMENT ================= */
 
 function addEnd(a = 0, b = 0) {
@@ -998,23 +1380,44 @@ function addEnd(a = 0, b = 0) {
 
     const endNum = tbody.rows.length + 1;
 
-    row.innerHTML = `
-        <td data-end="${endNum}">${endNum}</td>
+    if (quickScoreMode) {
 
-        <td>
-            <input class="small" type="number" min="0" value="${a}">
-        </td>
+        row.innerHTML = `
+            <td data-end="${endNum}">${endNum}</td>
+            <td>${quickCell("a", a, row)}</td>
+            <td>${quickCell("b", b, row)}</td>
+            <td><button onclick="removeEnd(this)">❌</button></td>
+        `;
 
-        <td>
-            <input class="small" type="number" min="0" value="${b}">
-        </td>
+        endsTable.classList.add("quick-mode");
 
-        <td>
-            <button onclick="removeEnd(this)">❌</button>
-        </td>
-    `;
+    } else {
+
+        row.innerHTML = `
+            <td data-end="${endNum}">${endNum}</td>
+
+            <td>
+                <input class="small" type="number" min="0" value="${a}">
+            </td>
+
+            <td>
+                <input class="small" type="number" min="0" value="${b}">
+            </td>
+
+            <td>
+                <button onclick="removeEnd(this)">❌</button>
+            </td>
+        `;
+
+        // wire up live total updates on every input change
+        row.querySelectorAll("input").forEach(inp => {
+            inp.addEventListener("input", updateTotals);
+        });
+    }
 
     tbody.appendChild(row);
+
+    updateTotals();
 }
 
 function removeEnd(button) {
@@ -1022,6 +1425,8 @@ function removeEnd(button) {
     button.closest("tr").remove();
 
     renumberEnds();
+
+    updateTotals();
 }
 
 function renumberEnds() {
@@ -1077,19 +1482,16 @@ function saveMatch() {
 
     const ends =
         [...endsTable.tBodies[0].rows]
-        .map(r => ({
+        .map(r => {
 
-            a: Number(
-                r.cells[1]
-                .firstElementChild.value || 0
-            ),
+            const aEl = r.cells[1].querySelector(".q-score") || r.cells[1].firstElementChild;
+            const bEl = r.cells[2].querySelector(".q-score") || r.cells[2].firstElementChild;
 
-            b: Number(
-                r.cells[2]
-                .firstElementChild.value || 0
-            )
-
-        }));
+            return {
+                a: Number(aEl?.textContent ?? aEl?.value ?? 0),
+                b: Number(bEl?.textContent ?? bEl?.value ?? 0)
+            };
+        });
 
     if (ends.length === 0) {
 
@@ -1224,8 +1626,16 @@ function render() {
         const a = total(m, "a");
         const b = total(m, "b");
 
-        shotsFor += a;
-        shotsAgainst += b;
+        // Determine perspective: if filter only matches Team B, view from B's side
+        const filterMatchesA = !teamFilter || teamAName.toLowerCase().includes(teamFilter);
+        const filterMatchesB = !teamFilter || teamBName.toLowerCase().includes(teamFilter);
+        const perspectiveB = !filterMatchesA && filterMatchesB;
+
+        const myScore    = perspectiveB ? b : a;
+        const theirScore = perspectiveB ? a : b;
+
+        shotsFor     += myScore;
+        shotsAgainst += theirScore;
 
         let winner = "Draw";
         let rowClass = "draw";
@@ -1233,20 +1643,21 @@ function render() {
         if (a > b) {
 
             winner = teamAName;
-            wins++;
-            rowClass = "win";
+            if (perspectiveB) { losses++; rowClass = "loss"; }
+            else               { wins++;   rowClass = "win";  }
         }
 
         else if (b > a) {
 
             winner = teamBName;
-            losses++;
-            rowClass = "loss";
+            if (perspectiveB) { wins++;   rowClass = "win";  }
+            else               { losses++; rowClass = "loss"; }
         }
 
         else {
 
             draws++;
+            rowClass = "draw";
         }
 
         /* ================= DESKTOP TABLE ================= */
@@ -1384,6 +1795,30 @@ function render() {
             </div>
         `;
     }
+
+    // Determine overall perspective for label
+    const filterVal = (filterTeam.value || "").toLowerCase();
+    let perspectiveLabel = "Showing stats from Team A's perspective (default)";
+
+    if (filterVal) {
+        // Check last filtered match to see which side matched
+        const sample = matches.find(m =>
+            m && m.teamA && m.teamB &&
+            (m.teamA.name || "").toLowerCase().includes(filterVal) ||
+            (m.teamB && (m.teamB.name || "").toLowerCase().includes(filterVal))
+        );
+        if (sample) {
+            const aMatch = (sample.teamA.name || "").toLowerCase().includes(filterVal);
+            const bMatch = (sample.teamB.name || "").toLowerCase().includes(filterVal);
+            if (bMatch && !aMatch) {
+                perspectiveLabel = `Showing stats from "${filterTeam.value}" (Team B) perspective`;
+            } else {
+                perspectiveLabel = `Showing stats for "${filterTeam.value}"`;
+            }
+        }
+    }
+
+    statsPerspective.textContent = perspectiveLabel;
 
     stats.innerHTML = `
         <b>Results</b><br>
@@ -1625,24 +2060,47 @@ function loadMatch(id) {
     });
 }
 
-/* ================= DELETE MATCH ================= */
+/* ================= CONFIRM MODAL ================= */
+
+let pendingDeleteId = null;
 
 function deleteMatch(id) {
 
-    if (
-        !confirm("Delete this match?")
-    ) {
+    const m = matches.find(x => String(x.id) === String(id));
+    if (!m) return;
 
-        return;
-    }
+    const name = `${m.teamA?.name || "Team A"} vs ${m.teamB?.name || "Team B"} (${m.date || "no date"})`;
 
-    matches =
-        matches.filter(
-            m => String(m.id) !== String(id)
-        );
+    document.getElementById("confirmMessage").textContent =
+        `Delete this match?\n${name}`;
 
+    pendingDeleteId = id;
+
+    document.getElementById("confirmModal").style.display = "flex";
+
+    document.getElementById("confirmYes").onclick = function() {
+
+        matches = matches.filter(m => String(m.id) !== String(pendingDeleteId));
+        saveStorage();
+        render();
+        closeConfirm();
+    };
+}
+
+function closeConfirm() {
+
+    document.getElementById("confirmModal").style.display = "none";
+    pendingDeleteId = null;
+}
+
+/* ================= DELETE MATCH ================= */
+
+function deleteMatch_old(id) {
+
+    if (!confirm("Delete this match?")) return;
+
+    matches = matches.filter(m => String(m.id) !== String(id));
     saveStorage();
-
     render();
 }
 
@@ -1666,6 +2124,34 @@ function clearForm() {
     endsTable.tBodies[0].innerHTML = "";
 
     addEnd();
+}
+
+/* ================= EXPORT REMINDER ================= */
+
+function updateExportReminder() {
+
+    const last = localStorage.getItem("lastExported");
+
+    if (!last) {
+        exportReminder.textContent = "⚠ Never exported — back up your data!";
+        exportReminder.className = "export-reminder overdue";
+        return;
+    }
+
+    const days = Math.floor(
+        (Date.now() - new Date(last).getTime()) / 86400000
+    );
+
+    if (days === 0) {
+        exportReminder.textContent = "✓ Exported today";
+        exportReminder.className = "export-reminder";
+    } else if (days <= 7) {
+        exportReminder.textContent = `✓ Last exported ${days} day${days > 1 ? "s" : ""} ago`;
+        exportReminder.className = "export-reminder";
+    } else {
+        exportReminder.textContent = `⚠ Last exported ${days} days ago — consider a backup!`;
+        exportReminder.className = "export-reminder overdue";
+    }
 }
 
 /* ================= EXPORT JSON ================= */
@@ -1694,6 +2180,9 @@ function exportJSON() {
 
         "application/json"
     );
+
+    localStorage.setItem("lastExported", new Date().toISOString());
+    updateExportReminder();
 }
 
 /* ================= EXPORT CSV ================= */
@@ -1726,6 +2215,9 @@ function exportCSV() {
         "matches.csv",
         "text/csv"
     );
+
+    localStorage.setItem("lastExported", new Date().toISOString());
+    updateExportReminder();
 }
 
 /* ================= IMPORT JSON ================= */
@@ -1840,6 +2332,8 @@ updatePlayerFields();
 clearForm();
 
 render();
+
+updateExportReminder();
 
 </script>
 
